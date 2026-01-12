@@ -5,6 +5,7 @@
     "": {
       "name": "my-better-t-app",
       "dependencies": {
+        "@base-ui/react": "^1.0.0",
         "@my-better-t-app/env": "workspace:*",
         "dotenv": "catalog:",
         "zod": "catalog:",

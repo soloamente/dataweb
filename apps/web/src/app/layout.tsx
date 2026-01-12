@@ -1,24 +1,57 @@
 import type { Metadata } from "next";
 
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 import "../index.css";
 import Header from "@/components/header";
 import Providers from "@/components/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const sfProRounded = localFont({
+  variable: "--font-sans",
+  src: [
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Ultralight.otf",
+      weight: "100",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Thin.otf",
+      weight: "200",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Light.otf",
+      weight: "300",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Regular.otf",
+      weight: "400",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Medium.otf",
+      weight: "500",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Semibold.otf",
+      weight: "600",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Bold.otf",
+      weight: "700",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Heavy.otf",
+      weight: "800",
+    },
+    {
+      path: "../../public/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Black.otf",
+      weight: "900",
+    },
+  ],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "my-better-t-app",
-  description: "my-better-t-app",
+  title: "DatwebGroup System",
+  description: "DatwebGroup System",
 };
 
 export default function RootLayout({
@@ -28,9 +61,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${sfProRounded.variable} antialiased`}
+      >
         <Providers>
-          <div className="grid grid-rows-[auto_1fr] h-svh">
+          <div className="grid grid-rows-[auto_1fr] h-svh isolate">
             <Header />
             {children}
           </div>
