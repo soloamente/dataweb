@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -66,7 +68,14 @@ const menuItems = {
 } as const;
 
 export default function Header() {
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  // State for desktop dropdown menus
+  const [desktopOpenMenu, setDesktopOpenMenu] = useState<string | null>(null);
+  // State for mobile side panel visibility
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // State for which category is expanded inside the mobile side panel
+  const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>(
+    null
+  );
 
   const categories = [
     { name: "servizi", label: "Servizi" },
@@ -74,69 +83,147 @@ export default function Header() {
     { name: "info", label: "Info" },
   ] as const;
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  // Close mobile menu when clicking outside or on a link
+  const handleMobileMenuClose = () => {
+    setMobileMenuOpen(false);
+    setDesktopOpenMenu(null);
+    setMobileOpenCategory(null);
+  };
+
   return (
-    <div className="flex fixed px-[40px] py-[30px] top-0 left-0 right-0 z-50 flex-row items-center justify-between">
-      <Link href="/" className="text-lg font-medium flex items-center gap-2.5">
-        <Image
-          src="/images/logos/logo_positivo.png"
-          alt="Dataweb"
-          width={100}
-          height={100}
-          className="w-auto h-10"
-        />{" "}
-        Dataweb
-      </Link>
+    <>
+      <div className="flex fixed px-4 md:px-[40px] py-4 md:py-[30px] top-0 left-0 right-0 z-50 flex-row items-center justify-between">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="text-lg font-medium flex items-center gap-2.5 z-50"
+        >
+          <Image
+            src="/images/logos/logo_positivo.png"
+            alt="Dataweb"
+            width={100}
+            height={100}
+            className="w-auto h-8 md:h-10"
+          />
+          <span className="hidden sm:inline">Dataweb</span>
+        </Link>
 
-      <nav className="flex gap-2 items-center">
-        {categories.map(({ name, label }) => {
-          const isOpen = openMenu === name;
-          const items = menuItems[name as keyof typeof menuItems];
+        {/* Desktop Navigation - hidden on mobile */}
+        <nav className="hidden md:flex gap-2 items-center">
+          {categories.map(({ name, label }) => {
+            const isOpen = desktopOpenMenu === name;
+            const items = menuItems[name as keyof typeof menuItems];
 
-          return (
-            <DropdownMenu
-              key={name}
-              open={isOpen}
-              onOpenChange={(open) => setOpenMenu(open ? name : null)}
-            >
-              <DropdownMenuTrigger
-                render={
-                  <button
-                    type="button"
-                    className={cn(
-                      "flex items-center gap-2.5 leading-none  cursor-pointer text-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
-                      "hover:bg-muted/50",
-                      isOpen ? "bg-primary-foreground/50 backdrop-blur-lg" : ""
-                    )}
-                  >
-                    {label}
-                    <VShapedArrowDown
-                      strokeWidth={2}
-                      className={cn(
-                        "transition-transform duration-300 text-foreground/60 ease-out",
-                        isOpen && "rotate-180"
-                      )}
-                    />
-                  </button>
-                }
-              />
-              <DropdownMenuContent
-                align="start"
-                sideOffset={8}
-                className={cn(
-                  "p-6 w-auto min-w-[600px] rounded-lg shadow-lg",
-                  name === "info" && "min-w-[800px]"
-                )}
+            return (
+              <DropdownMenu
+                key={name}
+                open={isOpen}
+                onOpenChange={(open) => setDesktopOpenMenu(open ? name : null)}
               >
-                {name === "info" ? (
-                  // Mega-menu layout for Info: two columns
-                  <div className="grid grid-cols-[1fr_1fr] gap-6">
-                    {/* Left column: 3 cards */}
+                <DropdownMenuTrigger
+                  render={
+                    <button
+                      type="button"
+                      className={cn(
+                        "flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
+                        "hover:bg-muted/50",
+                        isOpen
+                          ? "bg-primary-foreground/50 backdrop-blur-lg"
+                          : ""
+                      )}
+                    >
+                      {label}
+                      <VShapedArrowDown
+                        strokeWidth={2}
+                        className={cn(
+                          "transition-transform duration-300 text-foreground/60 ease-out",
+                          isOpen && "rotate-180"
+                        )}
+                      />
+                    </button>
+                  }
+                />
+                <DropdownMenuContent
+                  align="start"
+                  sideOffset={8}
+                  className={cn(
+                    "p-6 w-auto min-w-[600px] rounded-lg shadow-lg",
+                    name === "info" && "min-w-[800px]"
+                  )}
+                >
+                  {name === "info" ? (
+                    // Mega-menu layout for Info: two columns
+                    <div className="grid grid-cols-[1fr_1fr] gap-6">
+                      {/* Left column: 3 cards */}
+                      <div className="flex flex-col gap-3">
+                        {items.map((item) => (
+                          <Link
+                            key={item.to}
+                            href={item.to as any}
+                            onClick={() => setDesktopOpenMenu(null)}
+                            className="block"
+                          >
+                            <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer rounded-lg border-0 shadow-sm">
+                              <CardHeader className="px-4 py-3">
+                                <CardTitle className="text-sm font-semibold text-foreground">
+                                  {item.label}
+                                </CardTitle>
+                                <CardDescription className="text-xs text-muted-foreground mt-1">
+                                  {item.description}
+                                </CardDescription>
+                              </CardHeader>
+                            </Card>
+                          </Link>
+                        ))}
+                      </div>
+                      {/* Right column: 1 larger card with image */}
+                      <div>
+                        <Link
+                          href={"/info" as any}
+                          onClick={() => setDesktopOpenMenu(null)}
+                          className="block h-full"
+                        >
+                          <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer h-full rounded-lg border-0 shadow-sm">
+                            <div className="relative w-full h-48 bg-muted/30 rounded-t-lg mb-4 overflow-hidden">
+                              {/* Placeholder for image - replace with actual image */}
+                              <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
+                                [Immagine Chi siamo]
+                              </div>
+                            </div>
+                            <CardHeader className="px-4 py-3">
+                              <CardTitle className="text-sm font-semibold text-foreground">
+                                Chi siamo
+                              </CardTitle>
+                              <CardDescription className="text-xs text-muted-foreground mt-1">
+                                Scopri chi siamo e cosa facciamo.
+                              </CardDescription>
+                            </CardHeader>
+                          </Card>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    // Standard layout for other menus: single column
                     <div className="flex flex-col gap-3">
                       {items.map((item) => (
                         <Link
                           key={item.to}
                           href={item.to as any}
-                          onClick={() => setOpenMenu(null)}
+                          onClick={() => setDesktopOpenMenu(null)}
                           className="block"
                         >
                           <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer rounded-lg border-0 shadow-sm">
@@ -152,66 +239,166 @@ export default function Header() {
                         </Link>
                       ))}
                     </div>
-                    {/* Right column: 1 larger card with image */}
-                    <div>
-                      <Link
-                        href={"/info" as any}
-                        onClick={() => setOpenMenu(null)}
-                        className="block h-full"
-                      >
-                        <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer h-full rounded-lg border-0 shadow-sm">
-                          <div className="relative w-full h-48 bg-muted/30 rounded-t-lg mb-4 overflow-hidden">
-                            {/* Placeholder for image - replace with actual image */}
-                            <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
-                              [Immagine Chi siamo]
-                            </div>
-                          </div>
-                          <CardHeader className="px-4 py-3">
-                            <CardTitle className="text-sm font-semibold text-foreground">
-                              Chi siamo
-                            </CardTitle>
-                            <CardDescription className="text-xs text-muted-foreground mt-1">
-                              Scopri chi siamo e cosa facciamo.
-                            </CardDescription>
-                          </CardHeader>
-                        </Card>
-                      </Link>
-                    </div>
-                  </div>
-                ) : (
-                  // Standard layout for other menus: single column
-                  <div className="flex flex-col gap-3">
-                    {items.map((item) => (
-                      <Link
-                        key={item.to}
-                        href={item.to as any}
-                        onClick={() => setOpenMenu(null)}
-                        className="block"
-                      >
-                        <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer rounded-lg border-0 shadow-sm">
-                          <CardHeader className="px-4 py-3">
-                            <CardTitle className="text-sm font-semibold text-foreground">
-                              {item.label}
-                            </CardTitle>
-                            <CardDescription className="text-xs text-muted-foreground mt-1">
-                              {item.description}
-                            </CardDescription>
-                          </CardHeader>
-                        </Card>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          );
-        })}
-      </nav>
-      <div className="flex items-center gap-2">
-        <button className="flex px-5 py-2.75 cursor-pointer leading-none bg-primary-foreground text-primary rounded-full font-lg">
-          Parla con noi
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            );
+          })}
+        </nav>
+
+        {/* Desktop CTA Button - hidden on mobile */}
+        <div className="hidden md:flex items-center gap-2">
+          <button className="flex px-5 py-2.75 cursor-pointer leading-none bg-primary-foreground text-primary rounded-full font-lg transition-colors hover:bg-primary-foreground/90">
+            Parla con noi
+          </button>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden relative z-50 p-2 rounded-full hover:bg-muted/50 transition-colors"
+          aria-label={mobileMenuOpen ? "Chiudi menu" : "Apri menu"}
+          aria-expanded={mobileMenuOpen}
+        >
+          <AnimatePresence mode="wait">
+            {mobileMenuOpen ? (
+              <motion.div
+                key="close"
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+              >
+                <X className="w-6 h-6 text-foreground" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="menu"
+                initial={{ opacity: 0, rotate: 90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: -90 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+              >
+                <Menu className="w-6 h-6 text-foreground" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </button>
       </div>
-    </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden"
+              onClick={handleMobileMenuClose}
+            />
+
+            {/* Mobile Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{
+                type: "spring",
+                damping: 25,
+                stiffness: 200,
+                mass: 0.5,
+              }}
+              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-background border-l border-border/40 shadow-xl z-50 md:hidden overflow-y-auto"
+              style={{ willChange: "transform" }}
+            >
+              <div className="flex flex-col h-full pt-20 px-6 pb-6">
+                {/* Mobile Navigation Items */}
+                <nav className="flex flex-col gap-4">
+                  {categories.map(({ name, label }) => {
+                    const isOpen = mobileOpenCategory === name;
+                    const items = menuItems[name as keyof typeof menuItems];
+
+                    return (
+                      <div key={name} className="flex flex-col">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setMobileOpenCategory(isOpen ? null : name)
+                          }
+                          className={cn(
+                            "flex items-center justify-between w-full py-3 px-4 rounded-lg transition-colors text-left",
+                            "hover:bg-muted/50",
+                            isOpen && "bg-muted/30"
+                          )}
+                        >
+                          <span className="font-medium text-foreground">
+                            {label}
+                          </span>
+                          <VShapedArrowDown
+                            strokeWidth={2}
+                            className={cn(
+                              "transition-transform duration-300 text-foreground/60 ease-out",
+                              isOpen && "rotate-180"
+                            )}
+                          />
+                        </button>
+
+                        {/* Mobile Submenu */}
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{
+                                duration: 0.2,
+                                ease: "easeOut",
+                              }}
+                              className="overflow-hidden"
+                            >
+                              <div className="flex flex-col gap-2 pt-2 pb-4 pl-4">
+                                {items.map((item) => (
+                                  <Link
+                                    key={item.to}
+                                    href={item.to as any}
+                                    onClick={handleMobileMenuClose}
+                                    className="block py-2 px-4 rounded-lg hover:bg-muted/50 transition-colors"
+                                  >
+                                    <div className="font-medium text-sm text-foreground">
+                                      {item.label}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground mt-1">
+                                      {item.description}
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })}
+                </nav>
+
+                {/* Mobile CTA Button */}
+                <div className="mt-8 pt-6 border-t border-border/40">
+                  <button
+                    onClick={handleMobileMenuClose}
+                    className="w-full flex items-center justify-center px-5 py-3 cursor-pointer leading-none bg-primary text-primary-foreground rounded-full font-lg transition-colors hover:bg-primary-foreground/90"
+                  >
+                    Parla con noi
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

@@ -63,7 +63,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={sfProRounded.variable}>
       <body className="antialiased">
         <Providers>
-          <div className="grid grid-rows-[auto_1fr] h-svh isolate">
+          <div className="grid grid-rows-[auto_1fr] min-h-svh isolate">
             <Header />
             {children}
           </div>
