@@ -14,77 +14,80 @@ interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Marquee({
   children,
   className,
-  duration = 26,
+  duration = 20,
   pauseOnHover = false,
   direction = "left",
   fade = true,
   fadeAmount = 10,
   ...props
 }: MarqueeProps) {
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = React.useState(false);
+
   const items = React.Children.toArray(children);
   const isVertical = direction === "up" || direction === "down";
 
   return (
     <>
-      <style jsx>{`
-        @keyframes marquee {
-          from {
-            transform: translateX(0);
+      <style jsx>
+        {`
+          @keyframes scroll {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-50%);
+            }
           }
-          to {
-            transform: translateX(-50%);
-          }
-        }
 
-        @keyframes marquee-reverse {
-          from {
-            transform: translateX(-50%);
+          @keyframes scroll-reverse {
+            from {
+              transform: translateX(-50%);
+            }
+            to {
+              transform: translateX(0);
+            }
           }
-          to {
-            transform: translateX(0);
-          }
-        }
 
-        @keyframes marquee-y {
-          from {
-            transform: translateY(0);
+          @keyframes scroll-y {
+            from {
+              transform: translateY(0);
+            }
+            to {
+              transform: translateY(-50%);
+            }
           }
-          to {
-            transform: translateY(-50%);
-          }
-        }
 
-        @keyframes marquee-y-reverse {
-          from {
-            transform: translateY(-50%);
+          @keyframes scroll-y-reverse {
+            from {
+              transform: translateY(-50%);
+            }
+            to {
+              transform: translateY(0);
+            }
           }
-          to {
-            transform: translateY(0);
+
+          .marquee-scroller {
+            display: flex;
+            animation: ${isVertical
+                ? direction === "up"
+                  ? "scroll-y"
+                  : "scroll-y-reverse"
+                : direction === "left"
+                ? "scroll"
+                : "scroll-reverse"}
+              ${duration}s linear infinite;
           }
-        }
 
-        .marquee-content {
-          display: flex;
-          will-change: transform;
-          animation: ${
-            isVertical
-              ? direction === "up"
-                ? "marquee-y"
-                : "marquee-y-reverse"
-              : direction === "left"
-              ? "marquee"
-              : "marquee-reverse"
-          } ${duration}s linear infinite;
-        }
-
-        .marquee-content.paused {
-          animation-play-state: paused;
-        }
-      `}</style>
+          .marquee-scroller.paused {
+            animation-play-state: paused;
+          }
+        `}
+      </style>
       <div
+        ref={containerRef}
         className={cn(
-          "relative flex w-full overflow-hidden justify-center items-center",
+          "flex w-full overflow-hidden",
           isVertical && "flex-col",
           className
         )}
@@ -112,12 +115,11 @@ export function Marquee({
       >
         <div
           className={cn(
-            "marquee-content flex shrink-0",
+            "marquee-scroller flex shrink-0",
             isVertical && "flex-col",
             isPaused && "paused"
           )}
         >
-          {/* First set of items */}
           {items.map((item, index) => (
             <div
               key={`first-${index}`}
@@ -126,7 +128,6 @@ export function Marquee({
               {item}
             </div>
           ))}
-          {/* Second set - exact duplicate for seamless infinite loop */}
           {items.map((item, index) => (
             <div
               key={`second-${index}`}

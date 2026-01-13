@@ -208,7 +208,7 @@ export default function Header() {
         })}
       </nav>
       <div className="flex items-center gap-2">
-        <button className="flex px-5 py-2.75 cursor-pointer leading-none bg-primary-foreground text-primary rounded-full font-lg ">
+        <button className="flex px-5 py-2.75 cursor-pointer leading-none bg-primary-foreground text-primary rounded-full font-lg">
           Parla con noi
         </button>
       </div>
