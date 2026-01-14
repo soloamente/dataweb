@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -76,10 +76,11 @@ export default function Header() {
   const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>(
     null
   );
+  // Ref to store timeout for closing dropdown on hover
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const categories = [
     { name: "servizi", label: "Servizi" },
-    { name: "casi_studio", label: "Casi Studio" },
     { name: "info", label: "Info" },
   ] as const;
 
@@ -96,6 +97,43 @@ export default function Header() {
       document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
+
+  // Handle hover enter for desktop dropdowns
+  const handleHoverEnter = (menuName: string) => {
+    // Clear any pending close timeout immediately
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    // Immediately open the new menu (this will close any previously open menu)
+    setDesktopOpenMenu(menuName);
+  };
+
+  // Handle hover leave for desktop dropdowns
+  const handleHoverLeave = (menuName: string) => {
+    // Only close if we're leaving the currently open menu
+    // This prevents closing when moving between nav items
+    if (desktopOpenMenu === menuName) {
+      // Add a small delay before closing to allow moving to the dropdown content
+      closeTimeoutRef.current = setTimeout(() => {
+        // Double-check that this menu is still the open one before closing
+        // (in case user hovered over another nav item during the delay)
+        if (desktopOpenMenu === menuName) {
+          setDesktopOpenMenu(null);
+        }
+        closeTimeoutRef.current = null;
+      }, 150); // 150ms delay to allow smooth transition to dropdown content
+    }
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Close mobile menu when clicking outside or on a link
   const handleMobileMenuClose = () => {
@@ -124,52 +162,149 @@ export default function Header() {
 
         {/* Desktop Navigation - hidden on mobile */}
         <nav className="hidden md:flex gap-2 items-center">
-          {categories.map(({ name, label }) => {
+          {/* Servizi dropdown */}
+          {(() => {
+            const name = "servizi";
+            const label = "Servizi";
             const isOpen = desktopOpenMenu === name;
             const items = menuItems[name as keyof typeof menuItems];
 
             return (
-              <DropdownMenu
+              <div
                 key={name}
-                open={isOpen}
-                onOpenChange={(open) => setDesktopOpenMenu(open ? name : null)}
+                onMouseEnter={() => handleHoverEnter(name)}
+                onMouseLeave={() => handleHoverLeave(name)}
+                className="relative"
               >
-                <DropdownMenuTrigger
-                  render={
-                    <button
-                      type="button"
-                      className={cn(
-                        "flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
-                        "hover:bg-muted/50",
-                        isOpen
-                          ? "bg-primary-foreground/50 backdrop-blur-lg"
-                          : ""
-                      )}
-                    >
-                      {label}
-                      <VShapedArrowDown
-                        strokeWidth={2}
-                        className={cn(
-                          "transition-transform duration-300 text-foreground/60 ease-out",
-                          isOpen && "rotate-180"
-                        )}
-                      />
-                    </button>
-                  }
-                />
-                <DropdownMenuContent
-                  align="start"
-                  sideOffset={8}
-                  className={cn(
-                    "p-6 w-auto min-w-[600px] rounded-lg shadow-lg",
-                    name === "info" && "min-w-[800px]"
-                  )}
+                <DropdownMenu
+                  open={isOpen}
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      setDesktopOpenMenu(null);
+                    }
+                  }}
                 >
-                  {name === "info" ? (
-                    // Mega-menu layout for Info: two columns
-                    <div className="grid grid-cols-[1fr_1fr] gap-6">
+                  <DropdownMenuTrigger
+                    render={
+                      <button
+                        type="button"
+                        className={cn(
+                          "flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
+                          "hover:bg-muted/50",
+                          isOpen
+                            ? "bg-primary-foreground/50 backdrop-blur-lg"
+                            : ""
+                        )}
+                      >
+                        {label}
+                        <VShapedArrowDown
+                          strokeWidth={2}
+                          className={cn(
+                            "transition-transform duration-300 text-foreground/60 ease-out",
+                            isOpen && "rotate-180"
+                          )}
+                        />
+                      </button>
+                    }
+                  />
+                  <DropdownMenuContent
+                    align="start"
+                    sideOffset={8}
+                    onMouseEnter={() => handleHoverEnter(name)}
+                    onMouseLeave={() => handleHoverLeave(name)}
+                    className="p-2.5 w-auto min-w-[600px] rounded-2xl bg-primary-foreground/70 backdrop-blur-lg shadow-lg"
+                  >
+                    <div className="flex flex-col gap-2.5">
+                      {items.map((item) => (
+                        <Link
+                          key={item.to}
+                          href={item.to as any}
+                          onClick={() => setDesktopOpenMenu(null)}
+                          className="block"
+                        >
+                          <div className="bg-primary-foreground/25 flex flex-col  p-2.5 hover:bg-primary-foreground/70 transition-colors cursor-pointer rounded-lg ring-0 shadow-none duration-300">
+                            <div>
+                              <h2 className="text-lg font-medium text-foreground">
+                                {item.label}
+                              </h2>
+                              <p className="text-base text-muted-foreground">
+                                {item.description}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            );
+          })()}
+
+          {/* Casi Studio as a simple link */}
+          <Link
+            href="/casi-studio"
+            className="flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-4 py-2.75 rounded-full transition-colors hover:bg-muted/50"
+          >
+            Casi Studio
+          </Link>
+
+          {/* Info dropdown */}
+          {(() => {
+            const name = "info";
+            const label = "Info";
+            const isOpen = desktopOpenMenu === name;
+            const items = menuItems[name as keyof typeof menuItems];
+
+            return (
+              <div
+                key={name}
+                onMouseEnter={() => handleHoverEnter(name)}
+                onMouseLeave={() => handleHoverLeave(name)}
+                className="relative"
+              >
+                <DropdownMenu
+                  open={isOpen}
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      setDesktopOpenMenu(null);
+                    }
+                  }}
+                >
+                  <DropdownMenuTrigger
+                    render={
+                      <button
+                        type="button"
+                        className={cn(
+                          "flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
+                          "hover:bg-muted/50",
+                          isOpen
+                            ? "bg-primary-foreground/50 backdrop-blur-lg"
+                            : ""
+                        )}
+                      >
+                        {label}
+                        <VShapedArrowDown
+                          strokeWidth={2}
+                          className={cn(
+                            "transition-transform duration-300 text-foreground/60 ease-out",
+                            isOpen && "rotate-180"
+                          )}
+                        />
+                      </button>
+                    }
+                  />
+                  <DropdownMenuContent
+                    align="start"
+                    sideOffset={8}
+                    onMouseEnter={() => handleHoverEnter(name)}
+                    onMouseLeave={() => handleHoverLeave(name)}
+                    className="p-2.5 w-auto min-w-[800px] rounded-2xl bg-primary-foreground/70 backdrop-blur-lg shadow-lg"
+                  >
+                    {/* Mega-menu layout for Info: two columns */}
+                    <div className="grid grid-cols-[1fr_1fr] gap-2.5">
                       {/* Left column: 3 cards */}
-                      <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-2.5">
                         {items.map((item) => (
                           <Link
                             key={item.to}
@@ -177,16 +312,16 @@ export default function Header() {
                             onClick={() => setDesktopOpenMenu(null)}
                             className="block"
                           >
-                            <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer rounded-lg border-0 shadow-sm">
-                              <CardHeader className="px-4 py-3">
-                                <CardTitle className="text-sm font-semibold text-foreground">
+                            <div className="bg-primary-foreground/70 hover:bg-muted transition-colors cursor-pointer rounded-lg border-none shadow-none">
+                              <div className="px-4 py-3">
+                                <h2 className="text-lg font-semibold text-foreground">
                                   {item.label}
-                                </CardTitle>
-                                <CardDescription className="text-xs text-muted-foreground mt-1">
+                                </h2>
+                                <p className="text-sm text-muted-foreground mt-1">
                                   {item.description}
-                                </CardDescription>
-                              </CardHeader>
-                            </Card>
+                                </p>
+                              </div>
+                            </div>
                           </Link>
                         ))}
                       </div>
@@ -197,53 +332,30 @@ export default function Header() {
                           onClick={() => setDesktopOpenMenu(null)}
                           className="block h-full"
                         >
-                          <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer h-full rounded-lg border-0 shadow-sm">
+                          <div className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer h-full rounded-lg border-0 shadow-sm">
                             <div className="relative w-full h-48 bg-muted/30 rounded-t-lg mb-4 overflow-hidden">
                               {/* Placeholder for image - replace with actual image */}
                               <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
                                 [Immagine Chi siamo]
                               </div>
                             </div>
-                            <CardHeader className="px-4 py-3">
-                              <CardTitle className="text-sm font-semibold text-foreground">
+                            <div className="px-4 py-3">
+                              <h2 className="text-lg font-semibold text-foreground">
                                 Chi siamo
-                              </CardTitle>
-                              <CardDescription className="text-xs text-muted-foreground mt-1">
+                              </h2>
+                              <p className="text-sm text-muted-foreground mt-1">
                                 Scopri chi siamo e cosa facciamo.
-                              </CardDescription>
-                            </CardHeader>
-                          </Card>
+                              </p>
+                            </div>
+                          </div>
                         </Link>
                       </div>
                     </div>
-                  ) : (
-                    // Standard layout for other menus: single column
-                    <div className="flex flex-col gap-3">
-                      {items.map((item) => (
-                        <Link
-                          key={item.to}
-                          href={item.to as any}
-                          onClick={() => setDesktopOpenMenu(null)}
-                          className="block"
-                        >
-                          <Card className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer rounded-lg border-0 shadow-sm">
-                            <CardHeader className="px-4 py-3">
-                              <CardTitle className="text-sm font-semibold text-foreground">
-                                {item.label}
-                              </CardTitle>
-                              <CardDescription className="text-xs text-muted-foreground mt-1">
-                                {item.description}
-                              </CardDescription>
-                            </CardHeader>
-                          </Card>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             );
-          })}
+          })()}
         </nav>
 
         {/* Desktop CTA Button - hidden on mobile */}
@@ -318,7 +430,10 @@ export default function Header() {
               <div className="flex flex-col h-full pt-20 px-6 pb-6">
                 {/* Mobile Navigation Items */}
                 <nav className="flex flex-col gap-4">
-                  {categories.map(({ name, label }) => {
+                  {/* Servizi dropdown */}
+                  {(() => {
+                    const name = "servizi";
+                    const label = "Servizi";
                     const isOpen = mobileOpenCategory === name;
                     const items = menuItems[name as keyof typeof menuItems];
 
@@ -382,7 +497,87 @@ export default function Header() {
                         </AnimatePresence>
                       </div>
                     );
-                  })}
+                  })()}
+
+                  {/* Casi Studio as a simple link */}
+                  <Link
+                    href="/casi-studio"
+                    onClick={handleMobileMenuClose}
+                    className="flex items-center w-full py-3 px-4 rounded-lg transition-colors hover:bg-muted/50"
+                  >
+                    <span className="font-medium text-foreground">
+                      Casi Studio
+                    </span>
+                  </Link>
+
+                  {/* Info dropdown */}
+                  {(() => {
+                    const name = "info";
+                    const label = "Info";
+                    const isOpen = mobileOpenCategory === name;
+                    const items = menuItems[name as keyof typeof menuItems];
+
+                    return (
+                      <div key={name} className="flex flex-col">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setMobileOpenCategory(isOpen ? null : name)
+                          }
+                          className={cn(
+                            "flex items-center justify-between w-full py-3 px-4 rounded-lg transition-colors text-left",
+                            "hover:bg-muted/50",
+                            isOpen && "bg-muted/30"
+                          )}
+                        >
+                          <span className="font-medium text-foreground">
+                            {label}
+                          </span>
+                          <VShapedArrowDown
+                            strokeWidth={2}
+                            className={cn(
+                              "transition-transform duration-300 text-foreground/60 ease-out",
+                              isOpen && "rotate-180"
+                            )}
+                          />
+                        </button>
+
+                        {/* Mobile Submenu */}
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{
+                                duration: 0.2,
+                                ease: "easeOut",
+                              }}
+                              className="overflow-hidden"
+                            >
+                              <div className="flex flex-col gap-2 pt-2 pb-4 pl-4">
+                                {items.map((item) => (
+                                  <Link
+                                    key={item.to}
+                                    href={item.to as any}
+                                    onClick={handleMobileMenuClose}
+                                    className="block py-2 px-4 rounded-lg hover:bg-muted/50 transition-colors"
+                                  >
+                                    <div className="font-medium text-sm text-foreground">
+                                      {item.label}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground mt-1">
+                                      {item.description}
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })()}
                 </nav>
 
                 {/* Mobile CTA Button */}
