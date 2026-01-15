@@ -76,6 +76,8 @@ export default function Header() {
   const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>(
     null
   );
+  // State to track if user has scrolled
+  const [isScrolled, setIsScrolled] = useState(false);
   // Ref to store timeout for closing dropdown on hover
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -97,6 +99,25 @@ export default function Header() {
       document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
+
+  // Track scroll position to conditionally apply backdrop blur
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if user has scrolled more than 0 pixels
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // Handle hover enter for desktop dropdowns
   const handleHoverEnter = (menuName: string) => {
@@ -135,6 +156,46 @@ export default function Header() {
     };
   }, []);
 
+  // Rimuove il focus dal primo elemento quando il menu si apre tramite hover
+  // Questo previene l'outline visibile quando si naviga con il mouse
+  useEffect(() => {
+    if (desktopOpenMenu) {
+      // Usa multiple tentativi per catturare il focus che Base UI potrebbe impostare in modo asincrono
+      const removeFocus = () => {
+        const dropdownContent = document.querySelector(
+          `[data-slot="dropdown-menu-content"]`
+        );
+        if (dropdownContent) {
+          const firstLink = dropdownContent.querySelector("a");
+          const activeElement = document.activeElement;
+
+          // Se il primo link o qualsiasi link nel dropdown ha il focus, rimuovilo
+          if (
+            (firstLink && document.activeElement === firstLink) ||
+            (activeElement &&
+              activeElement.tagName === "A" &&
+              activeElement.closest('[data-slot="dropdown-menu-content"]'))
+          ) {
+            (activeElement as HTMLElement)?.blur();
+            firstLink?.blur();
+          }
+        }
+      };
+
+      // Prova immediatamente e poi con alcuni delay per catturare il focus asincrono
+      removeFocus();
+      const timeout1 = setTimeout(removeFocus, 0);
+      const timeout2 = setTimeout(removeFocus, 10);
+      const timeout3 = setTimeout(removeFocus, 50);
+
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+        clearTimeout(timeout3);
+      };
+    }
+  }, [desktopOpenMenu]);
+
   // Close mobile menu when clicking outside or on a link
   const handleMobileMenuClose = () => {
     setMobileMenuOpen(false);
@@ -143,8 +204,13 @@ export default function Header() {
   };
 
   return (
-    <>
-      <div className="flex fixed px-4 md:px-[40px] py-4 md:py-[30px] top-0 left-0 right-0 z-50 flex-row items-center justify-between">
+    <div className="p-4 fixed top-0 left-0 right-0 z-50 flex justify-center">
+      <div
+        className={cn(
+          "bg-transparent rounded-full text-primary-foreground flex w-2/2 px-1 md:px-2 py-1 md:py-2 flex-row items-center justify-between transition-all duration-200",
+          isScrolled && "backdrop-blur-sm"
+        )}
+      >
         {/* Logo */}
         <Link
           href="/"
@@ -161,7 +227,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation - hidden on mobile */}
-        <nav className="hidden md:flex gap-2 items-center">
+        <nav className="hidden md:flex gap-2 items-center ">
           {/* Servizi dropdown */}
           {(() => {
             const name = "servizi";
@@ -174,7 +240,7 @@ export default function Header() {
                 key={name}
                 onMouseEnter={() => handleHoverEnter(name)}
                 onMouseLeave={() => handleHoverLeave(name)}
-                className="relative"
+                className="relative "
               >
                 <DropdownMenu
                   open={isOpen}
@@ -189,7 +255,7 @@ export default function Header() {
                       <button
                         type="button"
                         className={cn(
-                          "flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
+                          "flex items-center  gap-2.5 leading-none cursor-pointer text-primary-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
                           "hover:bg-muted/50",
                           isOpen
                             ? "bg-primary-foreground/50 backdrop-blur-lg"
@@ -200,7 +266,7 @@ export default function Header() {
                         <VShapedArrowDown
                           strokeWidth={2}
                           className={cn(
-                            "transition-transform duration-300 text-foreground/60 ease-out",
+                            "transition-transform duration-300 text-primary-foreground/60 ease-out",
                             isOpen && "rotate-180"
                           )}
                         />
@@ -220,7 +286,7 @@ export default function Header() {
                           key={item.to}
                           href={item.to as any}
                           onClick={() => setDesktopOpenMenu(null)}
-                          className="block"
+                          className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:rounded-lg"
                         >
                           <div className="bg-primary-foreground/25 flex flex-col  p-2.5 hover:bg-primary-foreground/70 transition-colors cursor-pointer rounded-lg ring-0 shadow-none duration-300">
                             <div>
@@ -244,7 +310,7 @@ export default function Header() {
           {/* Casi Studio as a simple link */}
           <Link
             href="/casi-studio"
-            className="flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-4 py-2.75 rounded-full transition-colors hover:bg-muted/50"
+            className="flex items-center gap-2.5 leading-none cursor-pointer text-foreground-primary pl-4 pr-4 py-2.75 rounded-full transition-colors hover:bg-muted/50"
           >
             Casi Studio
           </Link>
@@ -276,7 +342,7 @@ export default function Header() {
                       <button
                         type="button"
                         className={cn(
-                          "flex items-center gap-2.5 leading-none cursor-pointer text-foreground pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
+                          "flex items-center gap-2.5 leading-none cursor-pointer text-foreground-primary pl-4 pr-3.5 py-2.75 rounded-full transition-colors",
                           "hover:bg-muted/50",
                           isOpen
                             ? "bg-primary-foreground/50 backdrop-blur-lg"
@@ -287,7 +353,7 @@ export default function Header() {
                         <VShapedArrowDown
                           strokeWidth={2}
                           className={cn(
-                            "transition-transform duration-300 text-foreground/60 ease-out",
+                            "transition-transform duration-300 text-foreground-primary/60 ease-out",
                             isOpen && "rotate-180"
                           )}
                         />
@@ -310,7 +376,7 @@ export default function Header() {
                             key={item.to}
                             href={item.to as any}
                             onClick={() => setDesktopOpenMenu(null)}
-                            className="block"
+                            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:rounded-lg"
                           >
                             <div className="bg-primary-foreground/70 hover:bg-muted transition-colors cursor-pointer rounded-lg border-none shadow-none">
                               <div className="px-4 py-3">
@@ -330,7 +396,7 @@ export default function Header() {
                         <Link
                           href={"/info" as any}
                           onClick={() => setDesktopOpenMenu(null)}
-                          className="block h-full"
+                          className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:rounded-lg"
                         >
                           <div className="bg-muted/50 hover:bg-muted transition-colors cursor-pointer h-full rounded-lg border-0 shadow-sm">
                             <div className="relative w-full h-48 bg-muted/30 rounded-t-lg mb-4 overflow-hidden">
@@ -360,7 +426,7 @@ export default function Header() {
 
         {/* Desktop CTA Button - hidden on mobile */}
         <div className="hidden md:flex items-center gap-2">
-          <button className="flex px-5 py-2.75 cursor-pointer leading-none bg-primary-foreground text-primary rounded-full font-lg transition-colors hover:bg-primary-foreground/90">
+          <button className="flex px-5 py-2.75 cursor-pointer leading-none bg-primary text-primary-foreground rounded-full font-lg transition-colors hover:bg-primary-foreground/90">
             Parla con noi
           </button>
         </div>
@@ -594,6 +660,6 @@ export default function Header() {
           </>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

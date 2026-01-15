@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Header from "@/components/header";
 import Providers from "@/components/providers";
+import Footer from "@/components/footer";
 
 const sfProRounded = localFont({
   variable: "--font-sans",
@@ -66,6 +67,7 @@ export default function RootLayout({
           <div className="grid grid-rows-[auto_1fr] min-h-svh isolate">
             <Header />
             {children}
+            <Footer />
           </div>
         </Providers>
       </body>

@@ -6,8 +6,8 @@ import IconYoutube from "./ui/icons/youtube";
 
 export default function Testimony() {
   return (
-    <div className="flex z-10 flex-col absolute w-full justify-center items-center bottom-4 md:bottom-8 left-0 right-0 px-4">
-      <div className="max-w-md w-full flex flex-col gap-3 md:gap-3.75 justify-center items-center">
+    <div className="flex z-10 flex-col absolute w-full justify-center items-center bottom-4 md:bottom-8 left-0 right-0 px-4 ">
+      <div className="max-w-md w-full flex flex-col gap-3 md:gap-3.75 justify-center items-center text-primary-foreground">
         <h2 className="opacity-70 text-sm md:text-base text-center">
           Più di 350 clienti si affidano a noi
         </h2>
@@ -20,8 +20,7 @@ export default function Testimony() {
             <span className="text-sm md:text-base">Discord</span>
           </div>
           <div className="flex gap-2 md:gap-2.5 items-center mx-2 md:mx-4">
-            <IconTikTok />{" "}
-            <span className="text-sm md:text-base">TikTok</span>
+            <IconTikTok /> <span className="text-sm md:text-base">TikTok</span>
           </div>
           <div className="flex gap-2 md:gap-2.5 items-center mx-2 md:mx-4">
             <IconYoutube />{" "}
