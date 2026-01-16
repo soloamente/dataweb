@@ -19,8 +19,8 @@ export default function Footer() {
               className="w-auto h-full grayscale opacity-50"
             />
           </div>
-          <div className="rounded-full w-full h-px bg-primary/20" />
-          <div className="grid grid-cols-2 gap-4 pt-8">
+          {/* <div className="rounded-full w-full h-px bg-primary/20" /> */}
+          <div className="grid grid-cols-2 gap-4 pt-12 border-t border-primary/20">
             <div className="bg-primary/20 w-fit h-fit max-w-md items-center p-2 pl-5 rounded-4xl flex">
               <div className="flex flex-col gap-2">
                 <h4 className="text-lg text-primary-foreground font-medium leading-none">
