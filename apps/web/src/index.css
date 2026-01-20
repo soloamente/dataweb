@@ -119,10 +119,11 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply font-sans bg-background text-foreground;
+    font-family: var(--font-inter);
+    @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    font-family: var(--font-inter);
   }
 
   /* Rimuove l'outline dai link nei dropdown quando il focus viene dato dal mouse */
@@ -174,4 +175,57 @@
   to {
     transform: translateY(0);
   }
+}
+
+/* Glassmorphic header styles */
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-in {
+  animation: hero-fade-in 0.6s ease-out forwards;
+}
+
+/* Until transition utilities */
+.ease-until {
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.duration-until {
+  transition-duration: 200ms;
+}
+
+/* Color utilities */
+.text-off-white {
+  color: rgb(247, 243, 236);
+}
+
+.text-off-black {
+  color: rgb(28, 28, 28);
+}
+
+/* Shadow utility */
+.shadow-until {
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Hamburger menu lines */
+.hamburger-line {
+  transition: all 0.3s ease;
+}
+
+/* Z-index utilities */
+.z-100 {
+  z-index: 100;
+}
+
+.z-450 {
+  z-index: 450;
 }

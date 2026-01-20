@@ -6,6 +6,8 @@ import localFont from "next/font/local";
 import Header from "@/components/header";
 import Providers from "@/components/providers";
 import Footer from "@/components/footer";
+import ReactLenis from "lenis/react";
+import { Inter } from "next/font/google";
 
 const sfProRounded = localFont({
   variable: "--font-sans",
@@ -50,6 +52,12 @@ const sfProRounded = localFont({
   display: "swap",
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "DatwebGroup System",
   description: "DatwebGroup System",
@@ -61,15 +69,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={sfProRounded.variable}>
+    <html lang="en" suppressHydrationWarning className={`${sfProRounded.variable} ${inter.variable} font-inter`}>
       <body className="antialiased">
+      <ReactLenis
+              root
+              options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}
+            >
         <Providers>
           <div className="grid grid-rows-[auto_1fr] min-h-svh isolate">
             <Header />
             {children}
             <Footer />
           </div>
-        </Providers>
+        </Providers>  
+        </ReactLenis>
       </body>
     </html>
   );

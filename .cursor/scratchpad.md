@@ -1,5 +1,31 @@
 # Background and Motivation
 
+## New UI Task: Navbar dropdown on hover (Servizi, Info)
+
+The user wants to **redo the hover dropdown menus** for the marketing site navbar items:
+- **Servizi**
+- **Info**
+
+Goal: a delightful, consistent, **accessible** dropdown experience (hover for pointer devices, click for touch), matching the current site design.
+
+## New UI Task: Events page (marketing)
+
+The user wants a new **Events** marketing page, taking strong inspiration from the layout/feel of:
+- `acctual.com` homepage (hero, section rhythm, typographic hierarchy)
+- `acctual.com/about` (mission-style storytelling blocks)
+- `acctual.com/teams` (card grids, feature callouts, pricing-like structure)
+- `acctual.com/blog` (list/feed layout patterns)
+
+Goal: ship a **new `/info/eventi` page** in the marketing site that recreates the **overall Acctual-like visual style** (elements, UI, appearance, density, rhythm), while keeping **DataWeb’s own text/content** as the source of truth.
+
+Content sources (copy + event list):
+- Events copy/list: `dataweb-srl.it/eventi`
+- News copy: `dataweb-srl.it/novita`
+- Case studies copy: `dataweb-srl.it/casi-studio`
+- About copy: `dataweb-srl.it/chi-siamo`
+
+Important: We will NOT copy Acctual’s text, brand phrases, logos, or proprietary imagery. We will recreate the *style system* and section patterns with DataWeb’s content.
+
 ## New Feature: Admin Panel
 
 The user needs a comprehensive admin panel to:
@@ -22,6 +48,24 @@ We had a Next.js 16 App Router error on route `/dashboard/decks/[id]/settings`:
 The route currently awaits `params` and fetches deck data via `getDeck(id)` at the top-level of the page component. This blocks route streaming and triggers the Next.js 16 warning/error.
 
 # Key Challenges and Analysis
+
+## Navbar hover dropdown challenges
+
+1. **Accessibility first (keyboard + screen readers)**:
+   - Hover-only menus are not sufficient; triggers must work via keyboard (Enter/Space) and expose state via ARIA.
+   - Focus must not get “lost” when moving between trigger and panel; Escape should close and restore focus.
+
+2. **Pointer vs touch behavior**:
+   - Hover behaviors must be limited to pointer devices to avoid “sticky hover” on touch.
+   - Touch devices should use tap/click to open/close reliably.
+
+3. **Don’t rebuild primitives by hand**:
+   - Use an existing accessible menu primitive already in the codebase (Radix/Base UI/etc).
+   - Avoid mixing different primitive systems within the same interaction surface.
+
+4. **Motion constraints**:
+   - Only add animations if they already exist or are explicitly desired.
+   - If present, keep interactions ≤200ms and honor `prefers-reduced-motion`.
 
 ## Admin Panel Challenges
 
@@ -68,7 +112,142 @@ The plugin automatically handles:
 - In Next.js 16, **uncached data access must be inside a `<Suspense>` boundary** to allow the route to stream a shell immediately.
 - The stack trace points to `await params`, but the fundamental issue is "top-level async work" (including `params` + `fetch`) happening outside Suspense.
 
+## Events page challenges
+
+1. **“Recreate style” without copying brand assets**:
+   - We will replicate *patterns* (typography scale, spacing rhythm, card/border/shadow language, button treatment, section composition) from Acctual-like references.
+   - We must avoid copying Acctual’s brand phrases/logos/illustrations; use **DataWeb brand** (colors, logo, existing assets in repo).
+
+2. **Copy ingestion (from DataWeb pages) → structured UI**:
+   - We’ll map the existing Events list into a typed schema (title, city, date range, “Scopri di più” link target).
+   - We’ll also pull a small amount of supporting copy from “Novità / Casi Studio / Chi Siamo” to fill the non-list sections (hero/supporting text, “why attend”, CTA).
+
+3. **Performance + UX**:
+   - Keep it mostly server-rendered (RSC) and avoid heavy client state.
+   - Use `next/image` for images, avoid CLS, and ensure mobile layouts are first-class.
+
+4. **Accessibility**:
+   - Strong heading structure (`h1` → `h2`…), keyboard-friendly event cards/links, and good focus rings.
+   - Make sure any “filters” are either real controls (and accessible) or omitted until needed.
+
 # High-level Task Breakdown
+
+## Phase 0: Marketing site navbar hover dropdown (Servizi, Info)
+
+### Task 0.1: Audit current `Header` nav implementation
+- **Approach**: Inspect `apps/web/src/components/header.tsx` to identify:
+  - Which primitive is currently used for menus (if any)
+  - Current DOM structure and focus handling
+  - Mobile nav behavior and whether “Servizi/Info” are duplicated for mobile
+- **Success criteria**:
+  - We can clearly point to the current trigger + panel code for both menus
+  - We identify the existing primitive system to reuse (or confirm none exists)
+
+### Task 0.2: Implement hover-open for pointer devices (Servizi, Info)
+- **Approach**:
+  - Keep the menus **controlled** (`open` state) so hover, focus, and click remain consistent.
+  - Open on `pointerenter` / close on `pointerleave` **only** when `(hover: hover) and (pointer: fine)` is true.
+  - Use a short close delay (e.g. 80–150ms) to prevent accidental close when moving between trigger and panel.
+- **Success criteria** (manual):
+  - Hovering “Servizi” opens its panel; moving pointer away closes it
+  - Same behavior for “Info”
+  - Moving pointer from trigger → panel does **not** flicker/close prematurely
+
+### Task 0.3: Ensure full keyboard support
+- **Approach**:
+  - Triggers must be focusable and toggle via Enter/Space.
+  - Arrow keys navigate items (or rely on the chosen primitive to handle this).
+  - Escape closes and returns focus to the trigger.
+  - Add any missing ARIA/state props required by the primitive.
+- **Success criteria** (manual):
+  - Tab to “Servizi”, press Enter/Space to open
+  - Arrow keys navigate items
+  - Escape closes and returns focus to the trigger
+
+### Task 0.4: Mobile behavior parity
+- **Approach**:
+  - On touch devices: tap opens/closes; no hover side effects.
+  - Ensure large hit targets (≥44px) and no dead zones.
+- **Success criteria** (manual):
+  - On mobile simulator: tap “Servizi/Info” opens and can be closed; no “stuck hover”
+
+### Task 0.5: Visual polish + consistency checks
+- **Approach**:
+  - Match spacing, radii, shadows, and typography to existing header styling.
+  - Avoid new gradients or glow effects.
+  - If animations exist: keep them ≤200ms, transform/opacity only, and add reduced-motion variant.
+- **Success criteria**:
+  - Dropdown feels consistent with existing UI and doesn’t introduce layout shift or accidental scrollbars
+  - No regressions for other nav items
+
+---
+
+## Phase 0b: Marketing site Eventi page (`/info/eventi`)
+
+### Task 0b.1: Decide content + IA (information architecture)
+- **Approach**:
+  - Define the sections we want, mirroring the **Acctual-like** *elements + appearance*:
+    - Hero (big typographic headline + short supporting paragraph + primary/secondary CTA)
+    - “Upcoming events” (card grid)
+    - “Why come / what you’ll learn” (feature grid)
+    - “Past events” (feed/list style, blog-like)
+    - CTA strip (newsletter / “request an invite”)
+    - Footer (reuse existing)
+  - Decide whether we need filters (type, city, online/in-person). If not, keep it simple and fast.
+- **Success criteria**:
+  - We have a final section list and a minimal event schema defined in the plan (see Task 0b.3).
+  - We identify exactly which DataWeb pages supply copy for each section (hero, CTA, supporting blocks).
+
+### Task 0b.2: Add the route and SEO metadata
+- **Approach**:
+  - Create `apps/web/src/app/info/eventi/page.tsx` (Server Component by default).
+  - Add `export const metadata` with page title/description aligned with the brand voice.
+  - Ensure the page uses existing global layout (`apps/web/src/app/layout.tsx`) and shared `Header`/`Footer` patterns already in use.
+- **Success criteria** (manual):
+  - Visiting `/info/eventi` renders without errors.
+  - `<title>` and meta description match “Events” context.
+
+### Task 0b.3: Create a small, typed Events data source (static-first)
+- **Approach**:
+  - Add a small file like `apps/web/src/lib/events.ts` that exports:
+    - `interface MarketingEvent { ... }` (no `any`)
+    - `UPCOMING_EVENTS` and `PAST_EVENTS` arrays
+  - Keep dates ISO strings and format on the server for locale correctness.
+- **Success criteria**:
+  - The events page renders both Upcoming and Past sections from this data source.
+  - TypeScript strictness passes for the new types/usage.
+
+### Task 0b.4: Build the UI sections (Acctual-inspired, original execution)
+- **Approach**:
+  - Implement section components under `apps/web/src/components/` (or keep inline if tiny), reusing existing UI primitives and styles.
+  - Visual direction (Acctual-like, but using DataWeb content and assets):
+    - Oversized, friendly headlines with tight leading
+    - Subtle borders, layered shadows, rounded cards
+    - “Editorial” spacing and short, punchy labels
+    - Blog-like list treatment for Past events
+  - Use `next/image` for any decorative images; keep them `aria-hidden` if decorative.
+- **Success criteria** (manual):
+  - Page looks good on mobile, tablet, and desktop (no horizontal scroll).
+  - Cards are clickable, have visible focus rings, and read well with a screen reader.
+
+### Task 0b.5: Add Events link to the header nav
+- **Approach**:
+  - Add an “Events” link in `apps/web/src/components/header.tsx` in desktop + mobile nav.
+  - Ensure it’s a real link (supports Cmd/Ctrl click).
+- **Success criteria** (manual):
+  - “Events” appears in nav on desktop and mobile.
+  - Clicking it navigates to `/info/eventi`.
+
+### Task 0b.6: Quality checks (lint/types + basic a11y sanity)
+- **Approach**:
+  - Run lint and type checks for the web app (and fix issues introduced by the new page/components).
+  - Quick accessibility sanity:
+    - One `h1`
+    - Logical tab order
+    - No interactive divs
+- **Success criteria**:
+  - Lint + typecheck pass for touched files.
+  - No obvious accessibility regressions in the Events page.
 
 ## Phase 1: Better Auth Admin Plugin Setup
 
@@ -226,6 +405,28 @@ The plugin automatically handles:
 
 # Project Status Board
 
+## Marketing Site Navbar
+- [ ] Task 0.1: Audit current `Header` nav implementation
+- [ ] Task 0.2: Implement hover-open for pointer devices (Servizi, Info)
+- [ ] Task 0.3: Ensure full keyboard support
+- [ ] Task 0.4: Mobile behavior parity
+- [ ] Task 0.5: Visual polish + consistency checks
+
+## Marketing Site Eventi Page
+- [ ] Task 0b.1: Decide content + IA (information architecture)
+- [ ] Task 0b.2: Add the route and SEO metadata (`/info/eventi`) — DONE (pending your confirmation)
+- [ ] Task 0b.3: Create typed events data source (static-first) — DONE (pending your confirmation)
+- [ ] Task 0b.4: Build the UI sections (original, Acctual-inspired) — IN PROGRESS
+- [ ] Task 0b.5: Add “Events” link to header nav (desktop + mobile)
+- [ ] Task 0b.6: Quality checks (lint/types + a11y sanity)
+
+## Marketing Site Casi Studio Page
+- [ ] Task 0c.1: Add full-height hero carousel (newest project) using Motion Plus — DONE (builds; using Motion fallback until Motion+ token)
+- [ ] Task 0c.2: Add carousel controls bar near bottom (thumbs + arrows)
+  - Notes: removed arrows; normalized outline path length to fix start/overflow.
+- [ ] Task 0c.3: Add “past projects” section that appears on scroll
+- [ ] Task 0c.4: Quality checks (lint/types)
+
 ## Admin Panel Implementation
 
 ### Phase 1: Database Schema
@@ -294,6 +495,82 @@ The plugin automatically handles:
    - Waitlist management page (`/admin/waitlist`)
    - All pages follow existing design patterns
 
+## Marketing Site Eventi Page (`/info/eventi`)
+
+- **Status**: Task 0b.2 implemented — awaiting your quick manual check
+- **What changed**:
+  - Added a new Next.js App Router route at `apps/web/src/app/info/eventi/page.tsx`
+  - Added page-level SEO metadata (`title`, `description`)
+  - Added the first Acctual-like UI pass for the main content:
+    - Upcoming events as a card grid
+    - Past events as a clean “feed/list”
+- **Verification**:
+  - `apps/web` production build succeeds and `/info/eventi` is included in the generated routes list
+
+## Marketing Site Navbar (Phase 0)
+
+### Task 0.1 Audit: current `Header` nav implementation (Servizi, Info) — DONE (pending your confirmation)
+
+**Where it lives**
+- Desktop nav: `apps/web/src/components/header.tsx` inside `<nav className="hidden ... lg:flex ...">`
+  - “Servizi dropdown”: around the inline IIFE starting near `/* Servizi dropdown */`
+  - “Info dropdown”: around the inline IIFE starting near `/* Info dropdown */`
+- Mobile nav: same file, inside the animated side panel (`mobileMenuOpen`) under `/* Mobile Navigation Items */`
+
+**Primitive system currently used (desktop)**
+- Uses `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent` imported from `@/components/ui/dropdown-menu` (shadcn/Radix-style wrapper).
+- The menu is **controlled** via `open={isOpen}` where `isOpen = desktopOpenMenu === name`.
+
+**How open/close works today (desktop)**
+- Open is driven by hover handlers on a wrapper `<div>`:
+  - `onMouseEnter={() => handleHoverEnter(name)}` → `setDesktopOpenMenu(name)`
+  - `onMouseLeave={() => handleHoverLeave(name)}` → delayed close (150ms) via `closeTimeoutRef`
+- `DropdownMenuContent` repeats the same enter/leave handlers to avoid closing while moving into the panel.
+- `onOpenChange` currently only handles **closing**:
+  - If `open` becomes `false` → `setDesktopOpenMenu(null)`
+  - There is no path that sets `desktopOpenMenu` when `open` becomes `true`
+  - Practical consequence: **click / keyboard toggle likely won’t open** because state is fully controlled by hover.
+
+**Potential a11y/focus issue found**
+- There’s a `useEffect` that calls `blur()` on focused links inside `[data-slot="dropdown-menu-content"]` whenever `desktopOpenMenu` is truthy.
+  - Comment says it’s to “remove focus when opened via hover” to avoid a visible outline.
+  - In practice it runs regardless of *how* the menu was opened, and risks breaking keyboard behavior.
+
+**Mobile behavior today**
+- Mobile does **not** use `DropdownMenu`: it uses a custom expandable section (`mobileOpenCategory`) per category.
+- Animations are via `AnimatePresence` + `motion.div` from `motion/react` (overlay, slide-in panel, and collapsible submenu height/opacity).
+
+### Task 0.2 Implement hover-open for pointer devices (Servizi, Info) — DONE (pending your manual test)
+
+**What changed (desktop)**
+- Hover open is now gated to **fine pointers only** using `matchMedia("(hover: hover) and (pointer: fine)")`.
+  - This prevents hover behavior on touch devices (avoids “sticky hover”).
+- Hover close delay remains short (120ms) to prevent accidental close when moving from trigger → panel.
+- Fixed a subtle bug: the delayed close previously used a stale state closure; now it uses a ref (`desktopOpenMenuRef`) so it won’t close the “wrong” menu if you move quickly between items.
+
+**Click/keyboard support**
+- `onOpenChange(true)` now correctly opens the controlled menu state, enabling click + keyboard toggling.
+- Opening one menu automatically closes the other (single `desktopOpenMenu` state).
+
+**Motion entrance animation**
+- Added a Motion entrance animation (opacity + transform, 180ms easeOut) via Base UI `render` prop on `DropdownMenuContent`.
+- Disabled the menu’s built-in CSS animations for these two dropdowns (`data-open:animate-none data-closed:animate-none`) to avoid double animations.
+- Honors `prefers-reduced-motion` via `useReducedMotion()`.
+
+**Notes**
+- The “blur focus when opened via hover” effect is now gated to hover-only openings, so keyboard usage should not be disrupted.
+- Fixed a JSX parse issue in the CTA button (`<        span` → `<span`) to avoid build/runtime failures while editing this file.
+ - Follow-up fix: if you still see a “tab-like” outline after hover-close, we now blur the *trigger button* after hover-close (Base UI may restore focus asynchronously).
+
+### Task 0.5 Visual polish + consistency checks — IN PROGRESS
+
+**Update**
+- Updated the desktop dropdown content UI for both “Servizi” and “Info” to a clean “mega menu” layout inspired by the reference:
+  - Header (title + subtitle)
+  - Divider
+  - Two-column grid of cards with subtle borders and minimal icon placeholders
+  - Same Motion entrance animation (opacity + transform, 180ms easeOut) already in place
+
 ### Next Steps for User:
 
 1. **Set First Admin User**: 
@@ -326,6 +603,24 @@ The plugin automatically handles:
 - Adjusted the right-hand sidebar container in `deck-settings-content.tsx` from `flex-0 min-w-[280px]` to `flex-1 min-w-0` so its width is now flexible (`width: 100%`) and can shrink to fit the available page width while staying in the flex layout.
 
 # Executor's Feedback or Assistance Requests
+
+## Navbar hover dropdown
+
+Questions for user (to avoid rework):
+1. Should the dropdown open **immediately** on hover, or with a tiny delay (e.g. 50–100ms) to prevent accidental opens?
+2. Do you want a subtle entrance animation (opacity/transform only, ≤200ms), or **no animation**?
+3. When opening one menu, should it automatically close the other (Servizi vs Info)? (Recommended: yes)
+
+## Marketing Site Eventi Page (`/info/eventi`)
+
+Please do a quick manual check:
+1. Visit `/info/eventi` and confirm it renders (no white screen / no console error).
+2. Confirm the browser tab title is “Eventi | Dataweb Group”.
+3. Confirm you now see:
+   - “Eventi in programma” cards
+   - “Eventi passati” list items
+
+Once you confirm, I’ll mark Task 0b.2 + 0b.3 as completed and proceed to Task 0b.4 (full Acctual-like sections and creative polish).
 
 ## Admin Panel Implementation
 
