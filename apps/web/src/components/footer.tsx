@@ -9,7 +9,7 @@ export default function Footer() {
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
       <div className="fixed bottom-0 h-[800px] w-full ">
-        <div className="py-8 px-12 h-full gap-2 w-full flex flex-col justify-end">
+        <div className="py-8 px-4 md:px-12 h-full gap-2 w-full flex flex-col justify-end">
           <div className="flex justify-center items-end w-full h-full pt-120 pb-20">
             <Image
               src="/images/logos/logo_positivo.png"
@@ -20,22 +20,25 @@ export default function Footer() {
             />
           </div>
           {/* <div className="rounded-full w-full h-px bg-primary/20" /> */}
-          <div className="grid grid-cols-2 gap-4 pt-12 border-t border-primary/20">
-            <div className="bg-primary/20 w-fit h-fit max-w-md items-center p-2 pl-5 rounded-4xl flex">
-              <div className="flex flex-col gap-2">
-                <h4 className="text-lg text-primary-foreground font-medium leading-none">
+          {/* Main footer content - single column on mobile, 2 columns on desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-12 border-t border-primary/20">
+            {/* NotarShare Doc promotional card - hidden on mobile */}
+            <div className="bg-primary/20 w-fit h-fit max-w-md items-center p-1.5 pl-3 md:p-2 md:pl-5 rounded-3xl md:rounded-4xl hidden md:flex">
+              <div className="flex flex-col gap-1 md:gap-2">
+                <h4 className="text-sm md:text-lg text-primary-foreground font-medium leading-none">
                   Nuovo portale NotarShare Doc
                 </h4>
-                <p className="text-primary-foreground/70 leading-none">
+                <p className="text-xs md:text-base text-primary-foreground/70 leading-none">
                   Scopri il nostro nuovo portale per la gestione documentale
                 </p>
               </div>
               <div
-                className="rounded-3xl h-20 w-23 bg-cover
+                className="rounded-2xl md:rounded-3xl h-14 w-16 md:h-20 md:w-23 bg-cover shrink-0
                bg-[url('/images/background_home.png')]"
               />
             </div>
-            <div className="grid w-full grid-cols-4 gap-4">
+            {/* Footer links - 2 columns on mobile, 4 on desktop */}
+            <div className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 gap-y-6">
               <div className="flex flex-col gap-3 font-medium leading-none">
                 {" "}
                 <h2 className="text-primary font-medium leading-none">
@@ -110,8 +113,8 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          {/* Copyright section - placed outside the grid to ensure visibility */}
-          <div className="grid grid-cols-2 justify-start items-center w-full gap-2 pt-12 font-medium leading-none">
+          {/* Copyright section - stacked on mobile, side-by-side on desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 justify-start items-center w-full gap-4 md:gap-2 pt-12 font-medium leading-none">
             <div className="flex justify-start items-center gap-2">
               <Image
                 src="/images/logos/logo_positivo.png"

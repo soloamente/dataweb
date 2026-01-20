@@ -347,7 +347,7 @@ export default function Header() {
   return (
     <>
     <header
-      className="fixed top-4 z-450 right-0 rounded-full! left-0 mx-auto container flex items-start justify-between py-2 lg:items-center text-off-white hero-fade-in"
+      className="fixed top-4 z-450 right-0 rounded-full! left-0 mx-4 md:mx-auto container flex items-start justify-between py-2 lg:items-center text-off-white hero-fade-in"
       style={{
         width: isScrolled ? "auto" : "90%",
         borderRadius: isScrolled ? "50px" : "24px",

@@ -13,7 +13,7 @@ const documentSources = [
 // Generate more messy documents by reusing images - scattered around
 const generateMessyDocuments = () => {
   const documents = [];
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 46; i++) {
     documents.push({
       src: documentSources[i % documentSources.length],
       id: `messy-doc-${i}`,
@@ -81,11 +81,12 @@ const messyPositions = [
   { x: -900, y: 0, rotate: 18, scale: 0.87 },
   { x: -800, y: 200, rotate: -22, scale: 0.84 },
   { x: -900, y: 400, rotate: 20, scale: 0.86 },
-  // Documents that can overlap the hero section (center area)
-  { x: -300, y: -50, rotate: -15, scale: 0.75 },
-  { x: -250, y: 50, rotate: 18, scale: 0.78 },
-  { x: 250, y: -50, rotate: -18, scale: 0.75 },
-  { x: 300, y: 50, rotate: 15, scale: 0.78 },
+  // Additional right side documents to balance (mirrored from left)
+  { x: 900, y: -400, rotate: -15, scale: 0.83 },
+  { x: 800, y: -200, rotate: 20, scale: 0.85 },
+  { x: 900, y: 0, rotate: -18, scale: 0.87 },
+  { x: 800, y: 200, rotate: 22, scale: 0.84 },
+  { x: 900, y: 400, rotate: -20, scale: 0.86 },
 ];
 
 // Tidy positions - organized in a web portal grid layout (2x2 grid)
@@ -105,7 +106,7 @@ export default function DocumentOrganizer() {
   };
 
   return (
-    <section className="relative min-h-dvh pt-[96px]! flex flex-col gap-16 items-center justify-center px-4 md:px-8 py-12 md:py-16 overflow-show">
+    <section className="relative min-h-dvh pt-[96px]! flex flex-col gap-16 items-center justify-center px-4 md:px-8 py-12 md:py-16 overflow-visible">
       {/* Messy state - documents scattered around the section */}
       <AnimatePresence mode="wait">
         {!isOrganized &&
@@ -134,7 +135,7 @@ export default function DocumentOrganizer() {
                   ease: "easeOut",
                   delay: index * 0.03,
                 }}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 pointer-events-none drop-shadow-lg z-[5]"
+                className="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 pointer-events-none drop-shadow-lg z-[5]"
                 aria-hidden="true"
               />
             );
@@ -151,7 +152,7 @@ export default function DocumentOrganizer() {
             Offri ai tuoi clienti accesso istantaneo ai loro documenti, sicurezza certificata e la semplicità che si aspettano dal digitale.
           </p>
         </div>
-        <div className="relative flex items-center justify-center">
+        <div className="flex items-center justify-center w-full">
           <button
             onClick={handleOrganize}
             disabled={isOrganized}
@@ -159,50 +160,86 @@ export default function DocumentOrganizer() {
           >
             Organizza
           </button>
-
-          {/* Tidy state - documents organized in web portal layout */}
-          <AnimatePresence>
-            {isOrganized && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                className="absolute left-1/2 -translate-x-1/2 top-full mt-8 w-[600px] md:w-[700px] bg-background/95 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-2xl"
-              >
-                <div className="mb-4">
-                  <h3 className="text-xl font-semibold text-center mb-2">I tuoi documenti organizzati</h3>
-                  <div className="h-px bg-border" />
-                </div>
-                <div className="grid grid-cols-2 gap-6">
-                  {tidyDocuments.map((doc, index) => {
-                    const pos = tidyPositions[index];
-                    return (
-                      <motion.div
-                        key={`tidy-${doc.id}`}
-                        initial={{ opacity: 0, y: 30, scale: 0.8 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{
-                          duration: 0.5,
-                          ease: [0.16, 1, 0.3, 1],
-                          delay: 0.7 + index * 0.1,
-                        }}
-                        className="flex flex-col items-center justify-center"
-                      >
-                        <motion.img
-                          src={doc.src}
-                          alt=""
-                          className="w-full max-w-[200px] h-auto object-contain drop-shadow-lg rounded"
-                          aria-hidden="true"
-                        />
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
+
+        {/* Mobile messy documents - horizontal row visible only on small screens */}
+        <AnimatePresence mode="wait">
+          {!isOrganized && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="lg:hidden flex justify-center items-end w-screen overflow-visible py-4"
+            >
+              {[...documentSources, ...documentSources, ...documentSources].map((src, index) => (
+                <motion.img
+                  key={`mobile-doc-${index}`}
+                  src={src}
+                  alt=""
+                  initial={{ opacity: 0, y: 30, rotate: (index - 5.5) * 6 }}
+                  animate={{ 
+                    opacity: 1, 
+                    y: 0, 
+                    rotate: (index - 5.5) * 6,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeOut",
+                    delay: 0.05 + index * 0.04,
+                  }}
+                  className="w-20 sm:w-28 -mx-4 sm:-mx-5 drop-shadow-lg shrink-0"
+                  style={{ 
+                    transformOrigin: "bottom center",
+                  }}
+                  aria-hidden="true"
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Tidy state - documents organized in web portal layout */}
+        <AnimatePresence>
+          {isOrganized && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+              className="w-full max-w-[700px] bg-background/95 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-2xl"
+            >
+              <div className="mb-4">
+                <h3 className="text-xl font-semibold text-center mb-2">I tuoi documenti organizzati</h3>
+                <div className="h-px bg-border" />
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                {tidyDocuments.map((doc, index) => {
+                  return (
+                    <motion.div
+                      key={`tidy-${doc.id}`}
+                      initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{
+                        duration: 0.5,
+                        ease: [0.16, 1, 0.3, 1],
+                        delay: 0.7 + index * 0.1,
+                      }}
+                      className="flex flex-col items-center justify-center"
+                    >
+                      <motion.img
+                        src={doc.src}
+                        alt=""
+                        className="w-full max-w-[200px] h-auto object-contain drop-shadow-lg rounded"
+                        aria-hidden="true"
+                      />
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
