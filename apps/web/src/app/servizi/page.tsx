@@ -94,7 +94,7 @@ function ServiceCard({ service }: { service: (typeof SERVICES)[number] }) {
 
 export default function ServiziPage() {
   return (
-    <main className="relative z-10 overflow-hidden bg-[#F7F7F5]">
+    <main className="relative rounded-b-3xl drop-shadow-2xl z-10 overflow-hidden bg-[#F7F7F5]">
       {/* Hero Section — Acctual-style with floating elements */}
       <section className="relative px-4 md:px-8 pt-24 md:pt-44 pb-20 md:pb-32">
         {/* Floating decorative elements */}
@@ -278,8 +278,6 @@ export default function ServiziPage() {
         </div>
       </section>
 
-      {/* Bottom padding for rounded footer */}
-      <div className="h-8 bg-[#F7F7F5]" />
     </main>
   );
 }

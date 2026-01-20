@@ -220,7 +220,7 @@ function PricingCard({ tier }: { tier: (typeof PRICING_TIERS)[number] }) {
 
 export default function ServiziNotaiEStudiPage() {
   return (
-    <main className="relative z-10 overflow-hidden bg-[#F7F7F5]">
+    <main className="relative rounded-b-3xl drop-shadow-2xl z-10 overflow-hidden bg-[#F7F7F5]">
       {/* Hero Section */}
       <section className="relative px-4 md:px-8 pt-24 md:pt-44 pb-16 md:pb-24">
         {/* Floating decorative elements */}
