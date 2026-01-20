@@ -358,9 +358,12 @@ export default function Header() {
   return (
     <>
     <header
-      className="fixed top-4 z-450 right-0 rounded-full! left-0 mx-4 md:mx-auto container flex items-start justify-between py-2 lg:items-center text-off-white hero-fade-in"
+      className="fixed top-4 z-450 inset-x-0 mx-auto rounded-full! flex items-start justify-between py-2 lg:items-center text-off-white hero-fade-in"
       style={{
-        width: isScrolled ? "auto" : "90%",
+        // Centering: inset-x-0 (left:0, right:0) + mx-auto + explicit width = centered
+        // This approach works reliably with fixed positioning
+        // Consistent width: 100vw - 32px (16px margins each side), max 1200px
+        width: "min(calc(100vw - 32px), 1200px)",
         borderRadius: isScrolled ? "50px" : "24px",
         paddingLeft: "12px",
         paddingRight: "10px",
@@ -378,10 +381,10 @@ export default function Header() {
         border: "var(--figma-border)",
         boxShadow: "var(--figma-shadow)",
         overflow: "hidden",
+        // GPU acceleration
         transform: "translateZ(0px)",
         backfaceVisibility: "hidden",
-        perspective: "1000px",
-        willChange: "backdrop-filter, background, border, box-shadow, opacity, transform, width",
+        willChange: "transform, opacity",
         contain: "layout style paint",
         isolation: "isolate",
         WebkitFontSmoothing: "antialiased",
