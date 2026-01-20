@@ -257,6 +257,17 @@ export default function Header() {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
     }
+
+    // IMPORTANT: Blur the trigger if it has focus before hover-opening.
+    // After browser navigation (back button), the trigger might retain focus from
+    // before navigation. If we hover-open while the trigger is focused, Base UI's
+    // internal focus management can conflict and immediately close the menu.
+    const trigger =
+      menuName === "servizi" ? serviziTriggerRef.current : infoTriggerRef.current;
+    if (trigger && document.activeElement === trigger) {
+      trigger.blur();
+    }
+
     // Immediately open the new menu (this will close any previously open menu)
     setDesktopOpenReason("hover");
     setDesktopOpenMenu(menuName);
@@ -419,13 +430,22 @@ export default function Header() {
                   // we must mirror it back into `desktopOpenMenu`.
                   if (open) {
                     updateDesktopAlignOffset(name);
-                    setDesktopOpenReason("intent");
+                    // Only set reason to "intent" if not already set by hover handler.
+                    // This preserves hover behavior when Base UI fires onOpenChange after
+                    // we programmatically opened the menu via hover.
+                    if (desktopOpenReasonRef.current !== "hover") {
+                      setDesktopOpenReason("intent");
+                    }
                     setDesktopOpenMenu(name);
                     return;
                   }
 
-                  setDesktopOpenMenu(null);
-                  setDesktopOpenReason(null);
+                  // Only close if we're not in a hover-controlled scenario.
+                  // Hover close is handled by handleHoverLeave with its own timing.
+                  if (desktopOpenReasonRef.current !== "hover") {
+                    setDesktopOpenMenu(null);
+                    setDesktopOpenReason(null);
+                  }
                 }}
               >
                 <DropdownMenuTrigger
@@ -491,7 +511,12 @@ export default function Header() {
                         <Link
                           key={item.to}
                           href={item.to as any}
-                          onClick={() => setDesktopOpenMenu(null)}
+                          onClick={() => {
+                            // Reset both menu state and reason when navigating away.
+                            // This ensures clean state when returning via browser back button.
+                            setDesktopOpenMenu(null);
+                            setDesktopOpenReason(null);
+                          }}
                           className={cn(
                             // Focus ring for keyboard users only (matches the rest of the nav behavior)
                             "group block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
@@ -563,13 +588,23 @@ export default function Header() {
                   // Base UI toggles open state on click/keyboard; since we control `open`,
                   // we must mirror it back into `desktopOpenMenu`.
                   if (open) {
-                    setDesktopOpenReason("intent");
+                    updateDesktopAlignOffset(name);
+                    // Only set reason to "intent" if not already set by hover handler.
+                    // This preserves hover behavior when Base UI fires onOpenChange after
+                    // we programmatically opened the menu via hover.
+                    if (desktopOpenReasonRef.current !== "hover") {
+                      setDesktopOpenReason("intent");
+                    }
                     setDesktopOpenMenu(name);
                     return;
                   }
 
-                  setDesktopOpenMenu(null);
-                  setDesktopOpenReason(null);
+                  // Only close if we're not in a hover-controlled scenario.
+                  // Hover close is handled by handleHoverLeave with its own timing.
+                  if (desktopOpenReasonRef.current !== "hover") {
+                    setDesktopOpenMenu(null);
+                    setDesktopOpenReason(null);
+                  }
                 }}
               >
                 <DropdownMenuTrigger
@@ -633,7 +668,12 @@ export default function Header() {
                         <Link
                           key={item.to}
                           href={item.to as any}
-                          onClick={() => setDesktopOpenMenu(null)}
+                          onClick={() => {
+                            // Reset both menu state and reason when navigating away.
+                            // This ensures clean state when returning via browser back button.
+                            setDesktopOpenMenu(null);
+                            setDesktopOpenReason(null);
+                          }}
                           className={cn(
                             // Focus ring for keyboard users only (matches the rest of the nav behavior)
                             "group block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
