@@ -4,140 +4,97 @@ import {
   CheckCircle2,
   Building2,
   FileStack,
-  Workflow,
-  Cloud,
+  ScanLine,
+  Brain,
   LineChart,
-  Settings,
+  Shield,
   Lock,
-  Upload,
-  GitMerge,
-  Rocket,
-  Headphones,
+  MapPin,
+  Users,
+  Calendar,
+  Blocks,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Soluzioni per Aziende | Dataweb Group",
+  title: "Soluzioni per Aziende Private e Pubbliche | Dataweb Group",
   description:
-    "Soluzioni enterprise per la digitalizzazione dei processi aziendali. Consulenza, integrazione e supporto dedicato.",
+    "Gestione documentale con AI, ICARU per reti vendita e reQuesto con blockchain. Digitalizzazione, estrazione dati e software su misura.",
 };
 
 /**
- * Process steps for the horizontal workflow section.
+ * Process steps for document digitalization workflow.
+ * Based on the actual DataWeb service flow.
  */
 const WORKFLOW_STEPS = [
   {
-    icon: Upload,
-    title: "Analisi processi",
-    description: "Studiamo i tuoi flussi di lavoro per identificare opportunità.",
+    icon: ScanLine,
+    title: "Scansione documenti",
+    description: "Convertiamo archivi cartacei in digitale con scanner professionali.",
   },
   {
-    icon: GitMerge,
-    title: "Progettazione",
-    description: "Progettiamo una soluzione integrata con i tuoi sistemi.",
+    icon: FileStack,
+    title: "Catalogazione",
+    description: "Classificazione accurata con metadati: data, tipologia, protocollo.",
   },
   {
-    icon: Rocket,
-    title: "Implementazione",
-    description: "Deploy graduale, minimizzando l'impatto sulle operazioni.",
+    icon: Brain,
+    title: "Estrazione dati AI",
+    description: "OCR avanzato e intelligenza artificiale per dati strutturati.",
   },
   {
-    icon: Headphones,
-    title: "Supporto continuo",
-    description: "Formazione e assistenza per massimizzare il valore.",
+    icon: LineChart,
+    title: "Analisi e integrazione",
+    description: "Dati pronti per analisi e integrazione nei tuoi sistemi.",
   },
 ] as const;
 
 /**
  * Features grid data.
+ * Based on real DataWeb products: Document Management, ICARU, reQuesto.
  */
 const FEATURES = [
   {
     icon: FileStack,
     title: "Gestione Documentale",
-    description: "Digitalizza, organizza e archivia documenti. Ricerca full-text.",
+    description: "Digitalizzazione, catalogazione intelligente e accesso da qualsiasi dispositivo.",
   },
   {
-    icon: Workflow,
-    title: "Automazione Processi",
-    description: "Automatizza workflow ripetitivi. Approvazioni e task gestiti.",
+    icon: Brain,
+    title: "Estrazione Dati con AI",
+    description: "OCR avanzato per catturare informazioni da fatture, contratti e moduli.",
   },
   {
-    icon: Cloud,
-    title: "Cloud & On-Premise",
-    description: "Soluzioni flessibili: cloud per scalabilità o on-premise.",
+    icon: Users,
+    title: "ICARU - Gestione Vendite",
+    description: "CRM per reti vendita: trattative, budget, statistiche e geolocalizzazione.",
   },
   {
-    icon: LineChart,
-    title: "Business Intelligence",
-    description: "Dashboard e report per decisioni data-driven.",
+    icon: Blocks,
+    title: "reQuesto - AI & Blockchain",
+    description: "Gestione documentale con data certa blockchain e indicizzazione AI.",
   },
   {
-    icon: Settings,
-    title: "Integrazioni",
-    description: "Collegamento con ERP, CRM e sistemi esistenti.",
+    icon: MapPin,
+    title: "Geolocalizzazione",
+    description: "Visualizza e analizza le trattative dei tuoi commerciali sul territorio.",
   },
   {
     icon: Lock,
-    title: "Compliance",
-    description: "Conformità GDPR, audit trail e sicurezza personalizzabile.",
+    title: "Sicurezza e Compliance",
+    description: "Conformità GDPR, blockchain per integrità e controllo accessi.",
   },
 ] as const;
 
 /**
  * Pain points for the dark section.
+ * Based on real problems DataWeb solves for companies.
  */
 const PAIN_POINTS = [
-  "I tuoi dipendenti perdono ore a cercare documenti in archivi disorganizzati",
-  "I processi di approvazione rallentano il business con email e firme manuali",
-  "I sistemi aziendali non comunicano tra loro, creando silos di informazione",
-] as const;
-
-/**
- * Pricing tiers.
- */
-const PRICING_TIERS = [
-  {
-    name: "Starter",
-    price: "Su richiesta",
-    cta: "Contattaci",
-    usageLabel: "Utilizzo",
-    usage: ["5 utenti inclusi", "10 GB storage"],
-    featuresLabel: "Include",
-    features: ["Gestione documentale base", "Supporto email"],
-    highlighted: false,
-  },
-  {
-    name: "Business",
-    price: "Su richiesta",
-    cta: "Prova gratis 30 giorni",
-    usageLabel: "Utilizzo",
-    usage: ["25 utenti inclusi", "100 GB storage"],
-    featuresLabel: "Tutto in Starter, più",
-    features: ["Workflow automatizzati", "Sync ERP", "Supporto prioritario"],
-    highlighted: true,
-  },
-  {
-    name: "Company",
-    price: "Su richiesta",
-    cta: "Prova gratis 30 giorni",
-    usageLabel: "Utilizzo",
-    usage: ["100 utenti inclusi", "1 TB storage"],
-    featuresLabel: "Tutto in Business, più",
-    features: ["Multi-livello approvazioni", "BI avanzata"],
-    highlighted: false,
-  },
-  {
-    name: "Enterprise",
-    price: "Parliamone",
-    cta: "Contattaci",
-    usageLabel: "Utilizzo",
-    usage: ["Utenti illimitati", "Storage illimitato"],
-    featuresLabel: "Tutto in Company, più",
-    features: ["Integrazioni custom", "Account manager dedicato"],
-    highlighted: false,
-  },
+  "Perdi tempo a cercare documenti in archivi cartacei disorganizzati",
+  "Non hai visibilità in tempo reale sulle trattative dei tuoi commerciali",
+  "L'estrazione manuale dei dati da fatture e contratti rallenta il lavoro",
 ] as const;
 
 function WorkflowCard({ step }: { step: (typeof WORKFLOW_STEPS)[number] }) {
@@ -158,67 +115,6 @@ function WorkflowCard({ step }: { step: (typeof WORKFLOW_STEPS)[number] }) {
   );
 }
 
-function PricingCard({ tier }: { tier: (typeof PRICING_TIERS)[number] }) {
-  return (
-    <div
-      className={cn(
-        "rounded-2xl p-6",
-        tier.highlighted
-          ? "bg-white border-2 border-neutral-900 shadow-md"
-          : "bg-white border border-neutral-200/80 shadow-sm",
-      )}
-    >
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-neutral-500">{tier.name}</h3>
-        <div className="mt-1 flex items-baseline gap-1">
-          <span className="text-2xl font-bold text-neutral-900">{tier.price}</span>
-        </div>
-      </div>
-
-      <Link
-        href="https://www.dataweb-srl.it/contatti/"
-        className={cn(
-          "w-full flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium",
-          "transition-colors duration-200",
-          tier.highlighted
-            ? "bg-neutral-900 text-white hover:bg-neutral-800"
-            : "bg-neutral-100 text-neutral-900 hover:bg-neutral-200",
-        )}
-      >
-        {tier.cta}
-      </Link>
-
-      <div className="mt-5">
-        <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">
-          {tier.usageLabel}
-        </p>
-        <ul className="space-y-1.5">
-          {tier.usage.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-sm text-neutral-700">
-              <CheckCircle2 className="size-3.5 text-neutral-400" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mt-4">
-        <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">
-          {tier.featuresLabel}
-        </p>
-        <ul className="space-y-1.5">
-          {tier.features.map((feature) => (
-            <li key={feature} className="flex items-center gap-2 text-sm text-neutral-700">
-              <CheckCircle2 className="size-3.5 text-neutral-400" />
-              {feature}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
 export default function ServiziAziendePage() {
   return (
     <main className="relative rounded-b-3xl drop-shadow-2xl z-10 overflow-hidden bg-[#F7F7F5]">
@@ -233,8 +129,8 @@ export default function ServiziAziendePage() {
                   📊
                 </div>
                 <div className="text-xs">
-                  <p className="font-medium text-neutral-900">Dashboard</p>
-                  <p className="text-neutral-500">In tempo reale</p>
+                  <p className="font-medium text-neutral-900">ICARU</p>
+                  <p className="text-neutral-500">Vendite in tempo reale</p>
                 </div>
               </div>
             </div>
@@ -245,7 +141,7 @@ export default function ServiziAziendePage() {
           <div className="rotate-6">
             <div className="rounded-lg bg-yellow-300 p-3 shadow-lg" style={{ fontFamily: "Comic Sans MS, cursive" }}>
               <p className="text-sm font-medium text-neutral-800">
-                Processi<br />automatizzati! ⚡
+                Dati estratti<br />in automatico! ⚡
               </p>
             </div>
           </div>
@@ -256,7 +152,7 @@ export default function ServiziAziendePage() {
             <div className="rounded-xl bg-white p-4 shadow-lg border border-neutral-200/60">
               <div className="flex items-center gap-2">
                 <div className="size-3 rounded-full bg-emerald-400" />
-                <span className="text-xs text-neutral-600">Sincronizzato</span>
+                <span className="text-xs text-neutral-600">Blockchain verificato</span>
               </div>
             </div>
           </div>
@@ -265,7 +161,7 @@ export default function ServiziAziendePage() {
         <div className="absolute bottom-32 right-[10%] hidden lg:block">
           <div className="rotate-[-5deg]">
             <div className="rounded-full bg-emerald-500 size-12 flex items-center justify-center shadow-lg">
-              <Building2 className="size-5 text-white" />
+              <Brain className="size-5 text-white" />
             </div>
           </div>
         </div>
@@ -273,11 +169,10 @@ export default function ServiziAziendePage() {
         {/* Main content */}
         <div className="mx-auto w-full max-w-4xl text-center relative z-10">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-neutral-900 tracking-tight">
-            Gestire i processi aziendali
+            Digitalizza, organizza, estrai.
             <br />
-            ti fa venire voglia di{" "}
             <span className="relative inline-block">
-              <span className="relative z-10">strapparti i capelli?</span>
+              <span className="relative z-10">Tutto in un unico servizio.</span>
               <span
                 className="absolute left-0 bottom-1 md:bottom-2 w-full h-3 md:h-4 bg-yellow-300 z-0 -rotate-1"
                 aria-hidden="true"
@@ -286,9 +181,9 @@ export default function ServiziAziendePage() {
           </h1>
 
           <p className="mt-6 md:mt-8 text-base md:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            Software operativo intuitivo che libera{" "}
-            <span className="font-medium text-neutral-900">10-20 ore al mese</span>{" "}
-            per il lavoro strategico.
+            Gestione documentale con AI, software vendite{" "}
+            <span className="font-medium text-neutral-900">ICARU</span> e{" "}
+            <span className="font-medium text-neutral-900">reQuesto</span> con blockchain.
           </p>
 
           <div className="mt-8 md:mt-10">
@@ -299,12 +194,12 @@ export default function ServiziAziendePage() {
                 "transition-colors duration-200 hover:bg-neutral-800",
               )}
             >
-              Inizia ora
+              Richiedi un preventivo
             </Link>
           </div>
 
           <p className="mt-10 text-sm text-neutral-500">
-            Scelto da <span className="font-medium text-neutral-700">centinaia</span> di aziende in Italia
+            Scelto da <span className="font-medium text-neutral-700">aziende private e pubbliche</span> in tutta Italia
           </p>
         </div>
       </section>
@@ -322,25 +217,25 @@ export default function ServiziAziendePage() {
               </div>
               <div className="flex-1 flex justify-center">
                 <div className="rounded-full bg-neutral-100 px-4 py-1 text-xs text-neutral-500">
-                  enterprise.dataweb.it
+                  icaru.dataweb.it
                 </div>
               </div>
             </div>
             {/* Screenshot placeholder */}
             <div className="aspect-video bg-neutral-100 flex items-center justify-center">
-              <p className="text-neutral-400 text-sm">Dashboard Enterprise</p>
+              <p className="text-neutral-400 text-sm">Dashboard ICARU - Gestione Vendite</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* "The way you want it to work" section */}
+      {/* Gestione Documentale section */}
       <section className="px-4 md:px-8 pb-20 md:pb-32">
         <div className="mx-auto w-full max-w-5xl text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight">
-            La gestione aziendale{" "}
+            Trasforma archivi cartacei in{" "}
             <span className="relative inline-block">
-              <span className="relative z-10">come la vuoi tu</span>
+              <span className="relative z-10">risorse digitali</span>
               <span
                 className="absolute left-0 bottom-0 md:bottom-1 w-full h-2 md:h-3 bg-yellow-300 z-0 -rotate-1"
                 aria-hidden="true"
@@ -348,20 +243,20 @@ export default function ServiziAziendePage() {
             </span>
           </h2>
           <p className="mt-4 text-base md:text-lg text-neutral-600 max-w-2xl mx-auto">
-            Se non ami il cambiamento, ti piaceremo. Rendiamo la gestione familiare, 
-            in un settore che cerca di reinventare tutto il resto.
+            Ci occupiamo dell'intero processo: dalla scansione alla classificazione automatica, 
+            fino all'estrazione dei dati tramite intelligenza artificiale.
           </p>
         </div>
       </section>
 
-      {/* Workflow Steps — Horizontal cards like Acctual */}
+      {/* Workflow Steps — Document digitalization process */}
       <section className="px-4 md:px-8 pb-20 md:pb-32">
         <div className="mx-auto w-full max-w-5xl">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight">
-              Se il tuo processo è il tuo prodotto,
+              Il processo di digitalizzazione
               <br />
-              ti sentirai a casa.
+              in 4 fasi
             </h2>
           </div>
 
@@ -379,40 +274,18 @@ export default function ServiziAziendePage() {
           <div className="relative">
             <div className="absolute -top-4 -left-2 text-6xl text-neutral-200 font-serif">"</div>
             <blockquote className="text-lg md:text-xl text-neutral-700 leading-relaxed pl-8">
-              DataWeb ci ha aiutato a digitalizzare processi che pensavamo impossibili da automatizzare. 
-              Il tempo risparmiato ci permette di concentrarci sulla crescita del business invece che sulla burocrazia.
+              Con ICARU abbiamo finalmente visibilità in tempo reale sulle trattative dei nostri commerciali. 
+              La dashboard ci permette di monitorare budget, fatturati e appuntamenti da un unico posto. 
+              Un gestionale semplice e potente che ha trasformato il nostro modo di vendere.
             </blockquote>
             <div className="mt-4 pl-8 text-sm text-neutral-500">
-              Direttore Operativo, Azienda cliente dal 2020
+              Direttore Commerciale, Azienda cliente DataWeb
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="px-4 md:px-8 pb-20 md:pb-32">
-        <div className="mx-auto w-full max-w-5xl">
-          <div className="text-center mb-10 md:mb-14">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight">
-              Nessun limite mensile,
-              <br />
-              nessun costo nascosto.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {PRICING_TIERS.map((tier) => (
-              <PricingCard key={tier.name} tier={tier} />
-            ))}
-          </div>
-
-          <p className="mt-8 text-center text-sm text-neutral-500">
-            Scelto da <span className="font-medium">centinaia</span> di aziende in Italia
-          </p>
-        </div>
-      </section>
-
-      {/* Pain Points — Dark blue section like Acctual */}
+      {/* Pain Points — Dark blue section */}
       <section className="relative px-4 md:px-8 py-20 md:py-32 bg-[#0F172A] overflow-hidden">
         {/* Floating decorative elements */}
         <div className="absolute top-10 left-[5%] hidden lg:block">
@@ -454,8 +327,8 @@ export default function ServiziAziendePage() {
             Stanco di soluzioni improvvisate?
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
-            Se rispondi sì a una di queste, è scientificamente provato che DataWeb renderà la tua vita{" "}
-            <span className="text-yellow-300">153% più semplice.</span>
+            Se rispondi sì a una di queste, le soluzioni DataWeb fanno{" "}
+            <span className="text-yellow-300">al caso tuo.</span>
           </h2>
 
           <div className="mt-10 space-y-4 text-left max-w-xl mx-auto">
@@ -493,10 +366,10 @@ export default function ServiziAziendePage() {
         <div className="mx-auto w-full max-w-5xl">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight">
-              Soluzioni complete per ogni esigenza
+              I nostri prodotti per le aziende
             </h2>
             <p className="mt-4 text-base md:text-lg text-neutral-600 max-w-xl mx-auto">
-              Strumenti integrati per gestire documenti, processi e dati aziendali.
+              Gestione documentale, CRM vendite ICARU e reQuesto con AI e blockchain.
             </p>
           </div>
 
@@ -527,12 +400,12 @@ export default function ServiziAziendePage() {
         <div className="mx-auto w-full max-w-4xl">
           <div className="rounded-2xl bg-white border border-neutral-200/80 p-8 md:p-12 shadow-sm text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 tracking-tight">
-              Pronto a trasformare la tua azienda?
+              Pronto a digitalizzare la tua azienda?
             </h2>
             <p className="mt-4 text-base text-neutral-600 max-w-lg mx-auto">
-              Contattaci per una consulenza gratuita e scopri come DataWeb può accelerare la tua trasformazione digitale.
+              Contattaci per un preventivo gratuito. Riduci i costi, aumenta la precisione, valorizza i tuoi documenti.
             </p>
-            <div className="mt-8">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="https://www.dataweb-srl.it/contatti/"
                 className={cn(
@@ -540,7 +413,16 @@ export default function ServiziAziendePage() {
                   "transition-colors duration-200 hover:bg-neutral-800",
                 )}
               >
-                Richiedi una consulenza
+                Richiedi un preventivo
+              </Link>
+              <Link
+                href="https://www.dataweb-srl.it/contatti/"
+                className={cn(
+                  "inline-flex items-center justify-center rounded-full bg-neutral-100 px-8 py-3.5 text-sm font-medium text-neutral-900",
+                  "transition-colors duration-200 hover:bg-neutral-200",
+                )}
+              >
+                Prenota demo ICARU
               </Link>
             </div>
           </div>

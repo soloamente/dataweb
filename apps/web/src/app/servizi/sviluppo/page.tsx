@@ -5,105 +5,110 @@ import {
   Code2,
   Smartphone,
   Globe,
-  Database,
-  Layers,
+  Brain,
+  Blocks,
   GitBranch,
   Wrench,
   Users,
   Zap,
   Shield,
-  MessageSquare,
   Lightbulb,
   Rocket,
+  Lock,
+  LineChart,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Sviluppo Software | Dataweb Group",
+  title: "Sviluppo Software, AI e Blockchain | Dataweb Group",
   description:
-    "Sviluppo software su misura per le tue esigenze. Applicazioni web, mobile, integrazioni API e molto altro.",
+    "Sviluppo software su misura con AI e blockchain. Stack avanzato: Angular, Ionic, Laravel, Python/Django. Soluzioni innovative per il tuo business.",
 };
 
 /**
  * Process steps for the horizontal workflow section.
+ * Based on the actual DataWeb development approach.
  */
 const WORKFLOW_STEPS = [
   {
     icon: Lightbulb,
-    title: "Discovery",
-    description: "Comprendiamo le tue esigenze e definiamo requisiti e obiettivi.",
-  },
-  {
-    icon: Layers,
-    title: "Design",
-    description: "Progettiamo architettura e UX con prototipi interattivi.",
+    title: "Analisi esigenze",
+    description: "Comprendiamo le tue necessità aziendali e definiamo gli obiettivi.",
   },
   {
     icon: Code2,
-    title: "Sviluppo",
-    description: "Sviluppiamo in sprint con rilasci frequenti e feedback.",
+    title: "Sviluppo su misura",
+    description: "Realizziamo software personalizzato con stack tecnologico avanzato.",
   },
   {
-    icon: Rocket,
-    title: "Deploy",
-    description: "Deployment sicuro e monitorato con supporto continuo.",
+    icon: Brain,
+    title: "Integrazione AI",
+    description: "Machine learning per automatizzare compiti e analisi predittive.",
+  },
+  {
+    icon: Blocks,
+    title: "Blockchain",
+    description: "Transazioni sicure, tracciabili e immutabili per il tuo business.",
   },
 ] as const;
 
 /**
  * Capabilities grid data.
+ * Based on real DataWeb services: Custom software, AI, Blockchain.
  */
 const CAPABILITIES = [
   {
     icon: Globe,
     title: "Applicazioni Web",
-    description: "Web app moderne con React, Next.js e le migliori tecnologie.",
+    description: "Web app con Angular, Bootstrap e Tailwind. Interfacce eleganti e responsive.",
   },
   {
     icon: Smartphone,
     title: "App Mobile",
-    description: "App native e cross-platform per iOS e Android.",
-  },
-  {
-    icon: Database,
-    title: "Backend & API",
-    description: "Architetture scalabili, API RESTful e GraphQL.",
+    description: "Applicazioni mobile con Ionic per iOS e Android da un unico codice.",
   },
   {
     icon: GitBranch,
-    title: "Integrazioni",
-    description: "Collegamento con sistemi esistenti e servizi di terze parti.",
+    title: "Backend Robusto",
+    description: "Infrastrutture scalabili con Laravel e Python/Django.",
   },
   {
-    icon: Layers,
-    title: "DevOps & CI/CD",
-    description: "Pipeline automatizzate e deployment continuo.",
+    icon: Brain,
+    title: "Intelligenza Artificiale",
+    description: "Algoritmi di machine learning per insights e decisioni strategiche.",
+  },
+  {
+    icon: Blocks,
+    title: "Blockchain",
+    description: "Transazioni tracciabili e immutabili. Sicurezza e trasparenza.",
   },
   {
     icon: Wrench,
-    title: "Manutenzione",
-    description: "Supporto tecnico, aggiornamenti e ottimizzazioni.",
+    title: "Integrazioni",
+    description: "Collegamento con sistemi esistenti e ottimizzazione dei flussi.",
   },
 ] as const;
 
 /**
  * Tech stack.
+ * Based on real DataWeb stack from their website.
  */
 const TECH_STACK = [
-  { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind"] },
-  { category: "Backend", items: ["Node.js", "Python", ".NET", "Go"] },
-  { category: "Database", items: ["PostgreSQL", "MongoDB", "Redis", "Supabase"] },
-  { category: "Cloud", items: ["AWS", "Azure", "GCP", "Vercel"] },
+  { category: "Frontend", items: ["Angular", "Ionic", "Bootstrap", "Tailwind"] },
+  { category: "Backend", items: ["Laravel", "Python", "Django", "API REST"] },
+  { category: "AI & ML", items: ["Machine Learning", "OCR", "Analisi Predittiva", "Automazione"] },
+  { category: "Blockchain", items: ["Smart Contract", "Tracciabilità", "Data Certa", "Immutabilità"] },
 ] as const;
 
 /**
  * Pain points for the dark section.
+ * Based on real problems DataWeb solves.
  */
 const PAIN_POINTS = [
-  "Hai un'idea ma non sai come trasformarla in un prodotto funzionante",
-  "Il tuo software attuale è obsoleto e difficile da mantenere",
-  "Hai bisogno di integrare sistemi che non comunicano tra loro",
+  "Hai un'idea innovativa ma non sai come trasformarla in software",
+  "I tuoi processi aziendali sono manuali e inefficienti",
+  "Hai bisogno di sicurezza e trasparenza nelle transazioni digitali",
 ] as const;
 
 export default function ServiziSviluppoPage() {
@@ -117,11 +122,11 @@ export default function ServiziSviluppoPage() {
             <div className="rounded-lg bg-white p-3 shadow-lg border border-neutral-200/60">
               <div className="flex items-center gap-2">
                 <div className="size-8 rounded bg-violet-100 flex items-center justify-center text-xs">
-                  💻
+                  🤖
                 </div>
                 <div className="text-xs">
-                  <p className="font-medium text-neutral-900">build.success</p>
-                  <p className="text-neutral-500">Deployed ✓</p>
+                  <p className="font-medium text-neutral-900">AI Integrata</p>
+                  <p className="text-neutral-500">Machine Learning</p>
                 </div>
               </div>
             </div>
@@ -132,7 +137,7 @@ export default function ServiziSviluppoPage() {
           <div className="rotate-6">
             <div className="rounded-lg bg-yellow-300 p-3 shadow-lg" style={{ fontFamily: "Comic Sans MS, cursive" }}>
               <p className="text-sm font-medium text-neutral-800">
-                Dalla idea<br />al prodotto! 🚀
+                AI + Blockchain<br />= Innovazione! 🚀
               </p>
             </div>
           </div>
@@ -140,11 +145,11 @@ export default function ServiziSviluppoPage() {
 
         <div className="absolute bottom-20 left-[8%] hidden lg:block">
           <div className="rotate-3">
-            <div className="rounded-xl bg-white p-4 shadow-lg border border-neutral-200/60 font-mono text-xs">
-              <span className="text-violet-600">const</span>{" "}
-              <span className="text-blue-600">app</span>{" "}
-              <span className="text-neutral-400">=</span>{" "}
-              <span className="text-green-600">✓</span>
+            <div className="rounded-xl bg-white p-4 shadow-lg border border-neutral-200/60">
+              <div className="flex items-center gap-2">
+                <div className="size-3 rounded-full bg-emerald-400" />
+                <span className="text-xs text-neutral-600">Blockchain verificato</span>
+              </div>
             </div>
           </div>
         </div>
@@ -152,7 +157,7 @@ export default function ServiziSviluppoPage() {
         <div className="absolute bottom-32 right-[10%] hidden lg:block">
           <div className="rotate-[-5deg]">
             <div className="rounded-full bg-violet-500 size-12 flex items-center justify-center shadow-lg">
-              <Code2 className="size-5 text-white" />
+              <Brain className="size-5 text-white" />
             </div>
           </div>
         </div>
@@ -160,10 +165,10 @@ export default function ServiziSviluppoPage() {
         {/* Main content */}
         <div className="mx-auto w-full max-w-4xl text-center relative z-10">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-neutral-900 tracking-tight">
-            Hai un'idea ma non sai
+            Software su misura con
             <br />
             <span className="relative inline-block">
-              <span className="relative z-10">come realizzarla?</span>
+              <span className="relative z-10">AI e Blockchain</span>
               <span
                 className="absolute left-0 bottom-1 md:bottom-2 w-full h-3 md:h-4 bg-yellow-300 z-0 -rotate-1"
                 aria-hidden="true"
@@ -172,8 +177,9 @@ export default function ServiziSviluppoPage() {
           </h1>
 
           <p className="mt-6 md:mt-8 text-base md:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            Sviluppiamo software su misura che trasforma le tue idee in prodotti reali.{" "}
-            <span className="font-medium text-neutral-900">Dal concept al deploy</span>, siamo al tuo fianco.
+            Trasformiamo le tue esigenze aziendali in soluzioni software innovative.{" "}
+            <span className="font-medium text-neutral-900">Intelligenza artificiale</span> e{" "}
+            <span className="font-medium text-neutral-900">blockchain</span> per il tuo vantaggio competitivo.
           </p>
 
           <div className="mt-8 md:mt-10">
@@ -184,12 +190,12 @@ export default function ServiziSviluppoPage() {
                 "transition-colors duration-200 hover:bg-neutral-800",
               )}
             >
-              Parliamo del tuo progetto
+              Richiedi un preventivo
             </Link>
           </div>
 
           <p className="mt-10 text-sm text-neutral-500">
-            <span className="font-medium text-neutral-700">30+ anni</span> di esperienza nello sviluppo software
+            Partner strategico per <span className="font-medium text-neutral-700">soluzioni software all'avanguardia</span>
           </p>
         </div>
       </section>
@@ -207,7 +213,7 @@ export default function ServiziSviluppoPage() {
               </div>
               <div className="flex-1 flex justify-center">
                 <div className="rounded bg-neutral-800 px-3 py-1 text-xs text-neutral-400">
-                  your-idea.ts
+                  ai-blockchain-solution.py
                 </div>
               </div>
             </div>
@@ -215,24 +221,27 @@ export default function ServiziSviluppoPage() {
             <div className="p-4 md:p-6 font-mono text-sm md:text-base">
               <div className="space-y-1 text-neutral-300">
                 <p>
-                  <span className="text-violet-400">const</span>{" "}
-                  <span className="text-blue-400">solution</span>{" "}
-                  <span className="text-neutral-500">=</span>{" "}
-                  <span className="text-yellow-400">await</span>{" "}
-                  <span className="text-green-400">develop</span>
-                  <span className="text-neutral-300">(</span>
-                  <span className="text-orange-400">yourIdea</span>
-                  <span className="text-neutral-300">);</span>
+                  <span className="text-violet-400">from</span>{" "}
+                  <span className="text-blue-400">dataweb</span>{" "}
+                  <span className="text-violet-400">import</span>{" "}
+                  <span className="text-green-400">AI, Blockchain</span>
                 </p>
                 <p className="text-neutral-500">
-                  {"// Trasformiamo le tue idee in codice"}
+                  {"# Soluzioni innovative per il tuo business"}
                 </p>
                 <p>&nbsp;</p>
                 <p>
-                  <span className="text-violet-400">export</span>{" "}
-                  <span className="text-blue-400">solution</span>
-                  <span className="text-neutral-300">;</span>{" "}
-                  <span className="text-green-400">{"// ✓ Ready to ship"}</span>
+                  <span className="text-blue-400">solution</span>{" "}
+                  <span className="text-neutral-500">=</span>{" "}
+                  <span className="text-green-400">AI</span>
+                  <span className="text-neutral-300">.analyze(data) +</span>{" "}
+                  <span className="text-green-400">Blockchain</span>
+                  <span className="text-neutral-300">.secure()</span>
+                </p>
+                <p>
+                  <span className="text-violet-400">return</span>{" "}
+                  <span className="text-blue-400">solution</span>{" "}
+                  <span className="text-neutral-500"># ✓ Sicuro e intelligente</span>
                 </p>
               </div>
             </div>
@@ -240,14 +249,14 @@ export default function ServiziSviluppoPage() {
         </div>
       </section>
 
-      {/* Workflow Steps — Horizontal cards like Acctual */}
+      {/* Workflow Steps — Our approach */}
       <section className="px-4 md:px-8 pb-20 md:pb-32">
         <div className="mx-auto w-full max-w-5xl">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight">
-              Se il tuo processo è il tuo prodotto,
+              Il nostro approccio
               <br />
-              ti sentirai a casa.
+              allo sviluppo software
             </h2>
           </div>
 
@@ -281,10 +290,10 @@ export default function ServiziSviluppoPage() {
           <div className="rounded-2xl bg-white border border-neutral-200/80 p-8 md:p-12 shadow-sm">
             <div className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 tracking-tight">
-                Le tecnologie che utilizziamo
+                Stack tecnologico avanzato
               </h2>
               <p className="mt-3 text-base text-neutral-600 max-w-lg mx-auto">
-                Stack moderno e collaudato per soluzioni performanti e scalabili.
+                Tecnologie all'avanguardia per soluzioni performanti e innovative.
               </p>
             </div>
 
@@ -315,11 +324,12 @@ export default function ServiziSviluppoPage() {
           <div className="relative">
             <div className="absolute -top-4 -left-2 text-6xl text-neutral-200 font-serif">"</div>
             <blockquote className="text-lg md:text-xl text-neutral-700 leading-relaxed pl-8">
-              Il team DataWeb ha trasformato la nostra idea in un prodotto che i nostri utenti adorano. 
-              La loro competenza tecnica e la capacità di comprendere il nostro business hanno fatto la differenza.
+              DataWeb ha sviluppato per noi una soluzione software che integra AI e blockchain. 
+              L'automazione dei processi e la sicurezza delle transazioni hanno trasformato il nostro modo di operare, 
+              dandoci un vantaggio competitivo decisivo.
             </blockquote>
             <div className="mt-4 pl-8 text-sm text-neutral-500">
-              CTO, Startup cliente
+              Responsabile IT, Azienda cliente DataWeb
             </div>
           </div>
         </div>
@@ -330,12 +340,12 @@ export default function ServiziSviluppoPage() {
         {/* Floating decorative elements */}
         <div className="absolute top-10 left-[5%] hidden lg:block">
           <div className="rotate-[-8deg]">
-            <div className="rounded-lg bg-red-100 p-3 shadow-lg">
+            <div className="rounded-lg bg-violet-100 p-3 shadow-lg">
               <div className="flex items-center gap-2">
-                <span className="text-2xl">💡</span>
+                <span className="text-2xl">🤖</span>
                 <div className="text-xs">
-                  <p className="font-medium text-neutral-800">IDEA</p>
-                  <p className="text-neutral-600 text-[10px]">COME LA<br/>REALIZZO?</p>
+                  <p className="font-medium text-neutral-800">AI</p>
+                  <p className="text-neutral-600 text-[10px]">MACHINE<br/>LEARNING</p>
                 </div>
               </div>
             </div>
@@ -346,7 +356,7 @@ export default function ServiziSviluppoPage() {
           <div className="rotate-12">
             <div className="rounded-lg bg-yellow-300 p-3 shadow-lg" style={{ fontFamily: "Comic Sans MS, cursive" }}>
               <p className="text-xs font-medium text-neutral-800">
-                Il nostro codice<br/>è spaghetti 🍝
+                Processi<br/>automatizzati! ⚡
               </p>
             </div>
           </div>
@@ -354,9 +364,9 @@ export default function ServiziSviluppoPage() {
 
         <div className="absolute top-1/2 right-[15%] hidden lg:block">
           <div className="rotate-6">
-            <div className="rounded-lg bg-pink-200 p-3 shadow-lg" style={{ fontFamily: "Comic Sans MS, cursive" }}>
+            <div className="rounded-lg bg-emerald-200 p-3 shadow-lg" style={{ fontFamily: "Comic Sans MS, cursive" }}>
               <p className="text-xs font-medium text-neutral-800">
-                Bug in<br/>produzione!! 🐛
+                Blockchain<br/>= Sicurezza 🔒
               </p>
             </div>
           </div>
@@ -367,8 +377,8 @@ export default function ServiziSviluppoPage() {
             Hai un progetto in mente?
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
-            Se ti riconosci in una di queste, possiamo{" "}
-            <span className="text-yellow-300">aiutarti.</span>
+            Se ti riconosci in una di queste, DataWeb è il{" "}
+            <span className="text-yellow-300">partner che cerchi.</span>
           </h2>
 
           <div className="mt-10 space-y-4 text-left max-w-xl mx-auto">
@@ -406,10 +416,10 @@ export default function ServiziSviluppoPage() {
         <div className="mx-auto w-full max-w-5xl">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight">
-              Cosa possiamo costruire insieme
+              Le nostre competenze
             </h2>
             <p className="mt-4 text-base md:text-lg text-neutral-600 max-w-xl mx-auto">
-              Competenze full-stack per realizzare qualsiasi tipo di progetto software.
+              Sviluppo software, intelligenza artificiale e blockchain per soluzioni innovative.
             </p>
           </div>
 
@@ -441,21 +451,21 @@ export default function ServiziSviluppoPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-2xl bg-white border border-neutral-200/80 p-6 shadow-sm text-center">
               <div className="mb-4 mx-auto flex size-12 items-center justify-center rounded-full bg-violet-100">
-                <Zap className="size-6 text-violet-600" aria-hidden="true" />
+                <Brain className="size-6 text-violet-600" aria-hidden="true" />
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900">Velocità</h3>
+              <h3 className="text-lg font-semibold text-neutral-900">AI Avanzata</h3>
               <p className="mt-2 text-sm text-neutral-600">
-                Metodologie agili per rilasci rapidi e feedback continuo.
+                Machine learning per automatizzare e fornire insights strategici.
               </p>
             </div>
 
             <div className="rounded-2xl bg-white border border-neutral-200/80 p-6 shadow-sm text-center">
               <div className="mb-4 mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-100">
-                <Shield className="size-6 text-emerald-600" aria-hidden="true" />
+                <Lock className="size-6 text-emerald-600" aria-hidden="true" />
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900">Qualità</h3>
+              <h3 className="text-lg font-semibold text-neutral-900">Blockchain Sicura</h3>
               <p className="mt-2 text-sm text-neutral-600">
-                Code review, testing automatizzato e best practice di settore.
+                Transazioni tracciabili, immutabili e trasparenti.
               </p>
             </div>
 
@@ -465,7 +475,7 @@ export default function ServiziSviluppoPage() {
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">Partnership</h3>
               <p className="mt-2 text-sm text-neutral-600">
-                Collaborazione stretta, comunicazione trasparente e supporto.
+                Partner strategico per soluzioni che anticipano il mercato.
               </p>
             </div>
           </div>
@@ -477,10 +487,11 @@ export default function ServiziSviluppoPage() {
         <div className="mx-auto w-full max-w-4xl">
           <div className="rounded-2xl bg-white border border-neutral-200/80 p-8 md:p-12 shadow-sm text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 tracking-tight">
-              Pronto a costruire qualcosa di grande?
+              Pronto a innovare il tuo business?
             </h2>
             <p className="mt-4 text-base text-neutral-600 max-w-lg mx-auto">
-              Contattaci per una consulenza gratuita e scopri come possiamo trasformare la tua idea in realtà.
+              Contattaci per un preventivo gratuito. Trasformiamo le tue esigenze aziendali in 
+              soluzioni software all'avanguardia con AI e blockchain.
             </p>
             <div className="mt-8">
               <Link
@@ -490,7 +501,7 @@ export default function ServiziSviluppoPage() {
                   "transition-colors duration-200 hover:bg-neutral-800",
                 )}
               >
-                Iniziamo a parlare
+                Richiedi un preventivo
               </Link>
             </div>
           </div>

@@ -3,140 +3,98 @@ import Link from "next/link";
 import {
   CheckCircle2,
   FileText,
-  BarChart3,
-  Building,
+  Truck,
+  ScanLine,
+  Globe,
+  Archive,
   Clock,
-  Users,
-  Lock,
-  Upload,
-  ListChecks,
-  Calculator,
+  Shield,
+  Leaf,
   Search,
+  Smartphone,
+  Building,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Software per Notai e Studi | Dataweb Group",
+  title: "Soluzioni per Notai e Studi Professionali | Dataweb Group",
   description:
-    "Clipper: il software gestionale leader in Italia per studi notarili. Gestione atti, pratiche, adempimenti fiscali e molto altro.",
+    "Notar Share Doc: deposito documenti, digitalizzazione archivi e portale web per studi notarili. Scansione on-demand e conservazione sostitutiva.",
 };
 
 /**
  * Process steps for the horizontal workflow section.
+ * Based on the actual DataWeb digitalization process.
  */
 const WORKFLOW_STEPS = [
   {
-    icon: Upload,
-    title: "Carica il documento",
-    description: "Importa atti e documenti con un click. Riconoscimento automatico.",
+    icon: Truck,
+    title: "Ritiro documenti",
+    description: "Ritiriamo i fascicoli presso il tuo Studio con nostri collaboratori e automezzi.",
   },
   {
-    icon: ListChecks,
-    title: "Gestisci la pratica",
-    description: "Workflow guidato con checklist e promemoria automatici.",
+    icon: FileText,
+    title: "Normalizzazione",
+    description: "Rimozione punti metallici, inserimento QR code, suddivisione in sotto-fascicoli.",
   },
   {
-    icon: Calculator,
-    title: "Adempimenti automatici",
-    description: "F24 e registrazioni generati automaticamente. Zero errori.",
+    icon: ScanLine,
+    title: "Digitalizzazione",
+    description: "Scansione professionale e inserimento metadati per ricerche future.",
   },
   {
-    icon: Search,
-    title: "Archivia e trova",
-    description: "Ricerca full-text. Trova qualsiasi atto in secondi.",
+    icon: Globe,
+    title: "Portale Web",
+    description: "Pubblicazione su piattaforma web accessibile da browser, tablet e smartphone.",
   },
 ] as const;
 
 /**
  * Features grid data.
+ * Based on real DataWeb services and benefits.
  */
 const FEATURES = [
   {
-    icon: FileText,
-    title: "Gestione Atti",
-    description: "Repertorio digitale, redazione guidata e modelli personalizzabili.",
+    icon: Archive,
+    title: "Deposito Documenti",
+    description: "Strutture di archiviazione sicure con conformità D.lgs. 81/08 e normativa antincendio.",
   },
   {
-    icon: BarChart3,
-    title: "Adempimenti Fiscali",
-    description: "F24, registrazioni, MUI generati automaticamente.",
+    icon: ScanLine,
+    title: "Scansione On-Demand",
+    description: "Accesso rapido ai fascicoli digitalizzati. Consegna cartacea disponibile su richiesta.",
   },
   {
-    icon: Building,
-    title: "Integrazione Enti",
-    description: "Collegamento diretto con Catasto, Conservatorie e altri enti.",
+    icon: Search,
+    title: "Ricerca Avanzata",
+    description: "Campi di ricerca personalizzabili. Trova qualsiasi documento in pochi click.",
   },
   {
-    icon: Clock,
-    title: "Scadenziario",
-    description: "Gestione centralizzata con notifiche automatiche.",
+    icon: Shield,
+    title: "Sicurezza GDPR",
+    description: "Conformità al Regolamento 2016/679. Protezione dati sensibili con accessi autorizzati.",
   },
   {
-    icon: Users,
-    title: "Anagrafica Clienti",
-    description: "Rubrica completa con storico pratiche e documenti.",
+    icon: Smartphone,
+    title: "Accesso Multidevice",
+    description: "Consulta i documenti da qualsiasi postazione, smartphone o tablet.",
   },
   {
-    icon: Lock,
-    title: "Sicurezza",
-    description: "Crittografia, backup automatici e controllo accessi.",
+    icon: Leaf,
+    title: "Sostenibilità",
+    description: "Riduci l'uso di carta e contribuisci a un futuro più sostenibile per l'ambiente.",
   },
 ] as const;
 
 /**
  * Pain points for the dark section.
+ * Based on real problems DataWeb solves.
  */
 const PAIN_POINTS = [
-  "Perdi ore a compilare manualmente F24 e adempimenti fiscali",
-  "I tuoi collaboratori usano fogli Excel per tracciare le pratiche",
-  "Non riesci a trovare velocemente gli atti nel tuo archivio",
-] as const;
-
-/**
- * Pricing tiers.
- */
-const PRICING_TIERS = [
-  {
-    name: "Starter",
-    price: "Su richiesta",
-    cta: "Contattaci",
-    usageLabel: "Utilizzo",
-    usage: ["Fino a 2 postazioni", "Funzionalità base"],
-    featuresLabel: "Include",
-    features: ["Gestione atti", "Repertorio", "Supporto email"],
-    highlighted: false,
-  },
-  {
-    name: "Professional",
-    price: "Su richiesta",
-    cta: "Prova gratis 30 giorni",
-    usageLabel: "Utilizzo",
-    usage: ["Fino a 10 postazioni", "Funzionalità complete"],
-    featuresLabel: "Tutto in Starter, più",
-    features: ["Adempimenti automatici", "Integrazione enti", "Supporto prioritario"],
-    highlighted: true,
-  },
-  {
-    name: "Studio",
-    price: "Su richiesta",
-    cta: "Prova gratis 30 giorni",
-    usageLabel: "Utilizzo",
-    usage: ["Postazioni illimitate", "Multi-sede"],
-    featuresLabel: "Tutto in Professional, più",
-    features: ["Personalizzazioni", "Formazione dedicata", "Account manager"],
-    highlighted: false,
-  },
-  {
-    name: "Enterprise",
-    price: "Parliamone",
-    cta: "Contattaci",
-    usageLabel: "Utilizzo",
-    usage: ["Postazioni illimitate", "Configurazione custom"],
-    featuresLabel: "Tutto in Studio, più",
-    features: ["Integrazioni custom", "SLA dedicato", "Supporto 24/7"],
-    highlighted: false,
-  },
+  "Perdi ore a cercare documenti nell'archivio cartaceo",
+  "Lo spazio del tuo studio è invaso da faldoni e scatole",
+  "Non hai accesso ai fascicoli quando sei fuori dall'ufficio",
 ] as const;
 
 function WorkflowCard({ step }: { step: (typeof WORKFLOW_STEPS)[number] }) {
@@ -157,67 +115,6 @@ function WorkflowCard({ step }: { step: (typeof WORKFLOW_STEPS)[number] }) {
   );
 }
 
-function PricingCard({ tier }: { tier: (typeof PRICING_TIERS)[number] }) {
-  return (
-    <div
-      className={cn(
-        "rounded-2xl p-6",
-        tier.highlighted
-          ? "bg-white border-2 border-neutral-900 shadow-md"
-          : "bg-white border border-neutral-200/80 shadow-sm",
-      )}
-    >
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-neutral-500">{tier.name}</h3>
-        <div className="mt-1 flex items-baseline gap-1">
-          <span className="text-2xl font-bold text-neutral-900">{tier.price}</span>
-        </div>
-      </div>
-
-      <Link
-        href="https://www.dataweb-srl.it/contatti/"
-        className={cn(
-          "w-full flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium",
-          "transition-colors duration-200",
-          tier.highlighted
-            ? "bg-neutral-900 text-white hover:bg-neutral-800"
-            : "bg-neutral-100 text-neutral-900 hover:bg-neutral-200",
-        )}
-      >
-        {tier.cta}
-      </Link>
-
-      <div className="mt-5">
-        <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">
-          {tier.usageLabel}
-        </p>
-        <ul className="space-y-1.5">
-          {tier.usage.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-sm text-neutral-700">
-              <CheckCircle2 className="size-3.5 text-neutral-400" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mt-4">
-        <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">
-          {tier.featuresLabel}
-        </p>
-        <ul className="space-y-1.5">
-          {tier.features.map((feature) => (
-            <li key={feature} className="flex items-center gap-2 text-sm text-neutral-700">
-              <CheckCircle2 className="size-3.5 text-neutral-400" />
-              {feature}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
 export default function ServiziNotaiEStudiPage() {
   return (
     <main className="relative rounded-b-3xl drop-shadow-2xl z-10 overflow-hidden bg-[#F7F7F5]">
@@ -228,12 +125,12 @@ export default function ServiziNotaiEStudiPage() {
           <div className="rotate-[-8deg]">
             <div className="rounded-lg bg-white p-3 shadow-lg border border-neutral-200/60">
               <div className="flex items-center gap-2">
-                <div className="size-8 rounded bg-red-100 flex items-center justify-center text-xs">
-                  📄
+                <div className="size-8 rounded bg-blue-100 flex items-center justify-center text-xs">
+                  📁
                 </div>
                 <div className="text-xs">
-                  <p className="font-medium text-neutral-900">Atto.pdf</p>
-                  <p className="text-neutral-500">Caricato ora</p>
+                  <p className="font-medium text-neutral-900">Fascicolo 2024</p>
+                  <p className="text-neutral-500">Digitalizzato</p>
                 </div>
               </div>
             </div>
@@ -244,7 +141,7 @@ export default function ServiziNotaiEStudiPage() {
           <div className="rotate-6">
             <div className="rounded-lg bg-yellow-300 p-3 shadow-lg" style={{ fontFamily: "Comic Sans MS, cursive" }}>
               <p className="text-sm font-medium text-neutral-800">
-                Risparmia<br />10-20 ore/mese! 🎉
+                Addio carta,<br />benvenuto digitale! 🎉
               </p>
             </div>
           </div>
@@ -255,7 +152,7 @@ export default function ServiziNotaiEStudiPage() {
             <div className="rounded-xl bg-white p-4 shadow-lg border border-neutral-200/60">
               <div className="flex items-center gap-2">
                 <div className="size-3 rounded-full bg-emerald-400" />
-                <span className="text-xs text-neutral-600">F24 generato</span>
+                <span className="text-xs text-neutral-600">Scansione completata</span>
               </div>
             </div>
           </div>
@@ -264,7 +161,7 @@ export default function ServiziNotaiEStudiPage() {
         <div className="absolute bottom-32 right-[10%] hidden lg:block">
           <div className="rotate-[-5deg]">
             <div className="rounded-full bg-blue-500 size-12 flex items-center justify-center shadow-lg">
-              <FileText className="size-5 text-white" />
+              <Archive className="size-5 text-white" />
             </div>
           </div>
         </div>
@@ -272,11 +169,10 @@ export default function ServiziNotaiEStudiPage() {
         {/* Main content */}
         <div className="mx-auto w-full max-w-4xl text-center relative z-10">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-neutral-900 tracking-tight">
-            La gestione dello studio
+            Il tuo archivio notarile
             <br />
-            ti fa venire voglia di{" "}
             <span className="relative inline-block">
-              <span className="relative z-10">strapparti i capelli?</span>
+              <span className="relative z-10">sempre a portata di click</span>
               <span
                 className="absolute left-0 bottom-1 md:bottom-2 w-full h-3 md:h-4 bg-yellow-300 z-0 -rotate-1"
                 aria-hidden="true"
@@ -285,9 +181,9 @@ export default function ServiziNotaiEStudiPage() {
           </h1>
 
           <p className="mt-6 md:mt-8 text-base md:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            Software gestionale intuitivo che libera{" "}
-            <span className="font-medium text-neutral-900">10-20 ore al mese</span>{" "}
-            per concentrarti sulla tua professione.
+            Deposito documenti, digitalizzazione archivi e{" "}
+            <span className="font-medium text-neutral-900">scansione on-demand</span>.{" "}
+            Accedi ai tuoi fascicoli da qualsiasi dispositivo.
           </p>
 
           <div className="mt-8 md:mt-10">
@@ -298,12 +194,12 @@ export default function ServiziNotaiEStudiPage() {
                 "transition-colors duration-200 hover:bg-neutral-800",
               )}
             >
-              Inizia ora
+              Richiedi un preventivo
             </Link>
           </div>
 
           <p className="mt-10 text-sm text-neutral-500">
-            Utilizzato da <span className="font-medium text-neutral-700">5.000+</span> studi notarili in Italia
+            Leader in Italia per <span className="font-medium text-neutral-700">deposito e digitalizzazione</span> documenti notarili
           </p>
         </div>
       </section>
@@ -321,25 +217,25 @@ export default function ServiziNotaiEStudiPage() {
               </div>
               <div className="flex-1 flex justify-center">
                 <div className="rounded-full bg-neutral-100 px-4 py-1 text-xs text-neutral-500">
-                  clipper.dataweb.it
+                  notarsharedoc.dataweb.it
                 </div>
               </div>
             </div>
             {/* Screenshot placeholder */}
             <div className="aspect-video bg-neutral-100 flex items-center justify-center">
-              <p className="text-neutral-400 text-sm">Interfaccia Clipper</p>
+              <p className="text-neutral-400 text-sm">Interfaccia Notar Share Doc</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* "The way you want it to work" section */}
+      {/* "Progetto Prometeo" section */}
       <section className="px-4 md:px-8 pb-20 md:pb-32">
         <div className="mx-auto w-full max-w-5xl text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight">
-            La gestione dello studio{" "}
+            Progetto Prometeo:{" "}
             <span className="relative inline-block">
-              <span className="relative z-10">come la vuoi tu</span>
+              <span className="relative z-10">digitalizzazione completa</span>
               <span
                 className="absolute left-0 bottom-0 md:bottom-1 w-full h-2 md:h-3 bg-yellow-300 z-0 -rotate-1"
                 aria-hidden="true"
@@ -347,20 +243,20 @@ export default function ServiziNotaiEStudiPage() {
             </span>
           </h2>
           <p className="mt-4 text-base md:text-lg text-neutral-600 max-w-2xl mx-auto">
-            Se non ami il cambiamento, ti piaceremo. Rendiamo la gestione dei numeri familiare, 
-            in un settore che cerca di reinventare tutto il resto.
+            Gli Studi Notarili orientati ad un futuro con meno carta affrontano la sfida di digitalizzare 
+            i documenti cartacei. Dataweb garantisce un servizio studiato nei minimi dettagli.
           </p>
         </div>
       </section>
 
-      {/* Workflow Steps — Horizontal cards like Acctual */}
+      {/* Workflow Steps — Digitalization process */}
       <section className="px-4 md:px-8 pb-20 md:pb-32">
         <div className="mx-auto w-full max-w-5xl">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight">
-              Se il tuo processo è il tuo prodotto,
+              Il processo di digitalizzazione
               <br />
-              ti sentirai a casa.
+              in 4 semplici fasi
             </h2>
           </div>
 
@@ -379,41 +275,18 @@ export default function ServiziNotaiEStudiPage() {
             {/* Quote mark */}
             <div className="absolute -top-4 -left-2 text-6xl text-neutral-200 font-serif">"</div>
             <blockquote className="text-lg md:text-xl text-neutral-700 leading-relaxed pl-8">
-              Clipper è 'tranquillità'. Fare manualmente gli adempimenti era stressante perché dovevo non solo 
-              approvare ma anche generare tutto - molto stressante. Il vero beneficio di Clipper è stato 
-              rimuovere questo stress. Mi migliora la qualità della vita.
+              Con Notar Share Doc abbiamo recuperato spazi fisici preziosi e ridotto drasticamente i tempi di ricerca. 
+              La scansione on-demand ci permette di accedere ai fascicoli in tempi brevissimi, anche quando siamo 
+              fuori dallo studio. Un servizio che ha trasformato il nostro modo di lavorare.
             </blockquote>
             <div className="mt-4 pl-8 text-sm text-neutral-500">
-              Studio Notarile Associato, Cliente dal 2018
+              Studio Notarile, Cliente Dataweb
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="px-4 md:px-8 pb-20 md:pb-32">
-        <div className="mx-auto w-full max-w-5xl">
-          <div className="text-center mb-10 md:mb-14">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight">
-              Nessun limite mensile,
-              <br />
-              nessun costo nascosto.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {PRICING_TIERS.map((tier) => (
-              <PricingCard key={tier.name} tier={tier} />
-            ))}
-          </div>
-
-          <p className="mt-8 text-center text-sm text-neutral-500">
-            Utilizzato da <span className="font-medium">5.000+</span> studi notarili in Italia
-          </p>
-        </div>
-      </section>
-
-      {/* Pain Points — Dark blue section like Acctual */}
+      {/* Pain Points — Dark blue section */}
       <section className="relative px-4 md:px-8 py-20 md:py-32 bg-[#0F172A] overflow-hidden">
         {/* Floating decorative elements */}
         <div className="absolute top-10 left-[5%] hidden lg:block">
@@ -455,8 +328,8 @@ export default function ServiziNotaiEStudiPage() {
             Stanco di soluzioni improvvisate?
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
-            Se rispondi sì a una di queste, è scientificamente provato che Clipper renderà la tua vita{" "}
-            <span className="text-yellow-300">153% più semplice.</span>
+            Se rispondi sì a una di queste, Notar Share Doc è la{" "}
+            <span className="text-yellow-300">soluzione che fa per te.</span>
           </h2>
 
           <div className="mt-10 space-y-4 text-left max-w-xl mx-auto">
@@ -483,7 +356,7 @@ export default function ServiziNotaiEStudiPage() {
                 "transition-colors duration-200 hover:bg-neutral-100",
               )}
             >
-              Prova Clipper
+              Prova Notar Share Doc
             </Link>
           </div>
         </div>
@@ -494,10 +367,10 @@ export default function ServiziNotaiEStudiPage() {
         <div className="mx-auto w-full max-w-5xl">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight">
-              Tutto ciò di cui hai bisogno
+              Vantaggi per il tuo studio
             </h2>
             <p className="mt-4 text-base md:text-lg text-neutral-600 max-w-xl mx-auto">
-              Un unico software per gestire ogni aspetto dello studio notarile.
+              Digitalizza il tuo archivio e accedi ai documenti da qualsiasi dispositivo.
             </p>
           </div>
 
@@ -528,10 +401,11 @@ export default function ServiziNotaiEStudiPage() {
         <div className="mx-auto w-full max-w-4xl">
           <div className="rounded-2xl bg-white border border-neutral-200/80 p-8 md:p-12 shadow-sm text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 tracking-tight">
-              Pronto a trasformare il tuo studio?
+              Pronto a digitalizzare il tuo archivio?
             </h2>
             <p className="mt-4 text-base text-neutral-600 max-w-lg mx-auto">
-              Contattaci per una demo gratuita e scopri come Clipper può semplificare il tuo lavoro.
+              Contattaci per un preventivo gratuito e scopri come Notar Share Doc può liberare spazio 
+              e tempo nel tuo studio.
             </p>
             <div className="mt-8">
               <Link
@@ -541,7 +415,7 @@ export default function ServiziNotaiEStudiPage() {
                   "transition-colors duration-200 hover:bg-neutral-800",
                 )}
               >
-                Richiedi una demo
+                Richiedi un preventivo
               </Link>
             </div>
           </div>

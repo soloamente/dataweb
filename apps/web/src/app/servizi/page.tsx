@@ -24,7 +24,7 @@ const SERVICES = [
     id: "notai-e-studi",
     title: "Notai e Studi",
     description:
-      "Software gestionale completo per studi notarili. Clipper è la soluzione leader in Italia.",
+      "Deposito documenti, digitalizzazione e scansione on-demand. Notar Share Doc è la soluzione leader in Italia.",
     href: "/servizi/notai-e-studi",
     icon: FileText,
     color: "bg-blue-500",
@@ -33,7 +33,7 @@ const SERVICES = [
     id: "aziende",
     title: "Aziende",
     description:
-      "Soluzioni enterprise per la digitalizzazione dei processi aziendali.",
+      "Gestione documentale con AI, ICARU per vendite e reQuesto con blockchain.",
     href: "/servizi/aziende",
     icon: Building2,
     color: "bg-emerald-500",
@@ -42,7 +42,7 @@ const SERVICES = [
     id: "sviluppo",
     title: "Sviluppo",
     description:
-      "Sviluppo software su misura con tecnologie all'avanguardia.",
+      "Software su misura con AI e blockchain. Stack avanzato per soluzioni innovative.",
     href: "/servizi/sviluppo",
     icon: Code2,
     color: "bg-violet-500",
@@ -106,8 +106,8 @@ export default function ServiziPage() {
                   <FileText className="size-4 text-white" />
                 </div>
                 <div className="text-xs">
-                  <p className="font-medium text-neutral-900">Clipper</p>
-                  <p className="text-neutral-500">Software Notarile</p>
+                  <p className="font-medium text-neutral-900">Notar Share Doc</p>
+                  <p className="text-neutral-500">Digitalizzazione Archivi</p>
                 </div>
               </div>
             </div>

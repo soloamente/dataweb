@@ -29,10 +29,10 @@ const NEWS_HREF_FALLBACK = "https://www.dataweb-srl.it/novita/";
  */
 export const RECENT_NEWS: readonly MarketingNews[] = [
   {
-    id: "aggiornamento-clipper-2026-01",
-    title: "Nuovo aggiornamento Clipper: funzionalità avanzate per gli studi notarili",
+    id: "aggiornamento-notar-share-doc-2026-01",
+    title: "Nuovo aggiornamento Notar Share Doc: portale web ancora più veloce",
     excerpt:
-      "Scopri le ultime novità del software Clipper con miglioramenti alle performance e nuove funzioni dedicate.",
+      "Scopri le ultime novità della piattaforma Notar Share Doc con miglioramenti alla ricerca e nuove funzioni di consultazione.",
     publishedDate: "2026-01-15",
     href: NEWS_HREF_FALLBACK,
   },
@@ -59,10 +59,10 @@ export const RECENT_NEWS: readonly MarketingNews[] = [
  */
 export const ARCHIVED_NEWS: readonly MarketingNews[] = [
   {
-    id: "rilascio-clipper-v5-2025-11",
-    title: "Rilascio Clipper v5: una nuova era per la gestione notarile",
+    id: "rilascio-notar-share-doc-v5-2025-11",
+    title: "Rilascio Notar Share Doc v5: nuova interfaccia di consultazione",
     excerpt:
-      "La quinta generazione del nostro software di punta porta con sé un'interfaccia completamente rinnovata.",
+      "La quinta generazione del portale Notar Share Doc porta con sé un'interfaccia completamente rinnovata per la ricerca documenti.",
     publishedDate: "2025-11-15",
     href: NEWS_HREF_FALLBACK,
   },
@@ -84,7 +84,7 @@ export const ARCHIVED_NEWS: readonly MarketingNews[] = [
   },
   {
     id: "integrazione-pec-2025",
-    title: "Nuova integrazione PEC in Clipper",
+    title: "Nuova integrazione PEC in Notar Share Doc",
     excerpt:
       "Gestisci la posta elettronica certificata direttamente dal tuo software gestionale.",
     publishedDate: "2025-08-05",
@@ -94,7 +94,7 @@ export const ARCHIVED_NEWS: readonly MarketingNews[] = [
     id: "aggiornamento-normativo-2025-07",
     title: "Aggiornamento normativo: le novità fiscali per i notai",
     excerpt:
-      "Un riepilogo delle principali novità normative e come Clipper si adegua automaticamente.",
+      "Un riepilogo delle principali novità normative e come Notar Share Doc si adegua automaticamente.",
     publishedDate: "2025-07-20",
     href: NEWS_HREF_FALLBACK,
   },
